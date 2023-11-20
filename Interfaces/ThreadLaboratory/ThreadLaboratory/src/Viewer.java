@@ -37,7 +37,7 @@ public class Viewer extends JFrame implements ComponentListener, ActionListener,
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
         this.addComponentListener(this);
-        this.setSize(1360, 720);
+        this.setSize(920, 520);
         this.setVisible(true);
         this.addUIComponents();
     }
