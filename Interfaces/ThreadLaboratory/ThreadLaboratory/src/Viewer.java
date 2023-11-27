@@ -65,7 +65,14 @@ public class Viewer extends JFrame implements ComponentListener, ActionListener,
 
     @Override
     public void run() {
-        // throw new UnsupportedOperationException("Unimplemented method 'run'");
+        try {
+            while(true){
+                this.controller.getResults();
+                Thread.sleep(50);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     @Override
