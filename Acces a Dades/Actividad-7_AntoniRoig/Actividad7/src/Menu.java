@@ -32,35 +32,35 @@ public class Menu {
                         clients = llegirClients(nomFitxer);
                         System.out.println("Nombre de clients: " + clients.size());
                     } else {
-                        System.out.println("Si us plau, seleccioneu primer el fitxer.");
+                        System.out.println("Selecciona primer el fitxer");
                     }
                     break;
                 case 3:
                     if (nomFitxer != null) {
                         mostrarDadesClient(clients);
                     } else {
-                        System.out.println("Si us plau, seleccioneu primer el fitxer.");
+                        System.out.println("Selecciona primer el fitxer");
                     }
                     break;
                 case 4:
                     if (nomFitxer != null) {
                         afegirClient(clients, nomFitxer);
                     } else {
-                        System.out.println("Si us plau, seleccioneu primer el fitxer.");
+                        System.out.println("Selecciona primer el fitxer");
                     }
                     break;
                 case 5:
                     if (nomFitxer != null) {
                         eliminarClient(clients, nomFitxer);
                     } else {
-                        System.out.println("Si us plau, seleccioneu primer el fitxer.");
+                        System.out.println("Selecciona primer el fitxer");
                     }
                     break;
                 case 6:
                     if (nomFitxer != null) {
                         modificarClient(clients, nomFitxer);
                     } else {
-                        System.out.println("Si us plau, seleccioneu primer el fitxer.");
+                        System.out.println("Selecciona primer el fitxer");
                     }
                     break;
                 case 7:
@@ -158,6 +158,7 @@ public class Menu {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomFitxer))) {
             for (Client client : clients) {
                 writer.write("=== [CLIENT] ===\n");
+                writer.write("[Identificador] - " + client.getIdentificador() + "\n");
                 writer.write("[NOM] - " + client.getNom() + "\n");
                 writer.write("[COGNOM] - " + client.getCognom() + "\n");
                 writer.write("[EDAT] - " + client.getEdat() + "\n");

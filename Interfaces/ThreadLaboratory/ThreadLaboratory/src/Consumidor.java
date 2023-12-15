@@ -1,10 +1,10 @@
 import java.util.Random;
 
 public class Consumidor implements Runnable {
-    private Product prod;
+    private Contador prod;
     private Random random = new Random();
 
-    public Consumidor(Product v) {
+    public Consumidor(Contador v) {
         this.prod = v;
     }
 
@@ -15,7 +15,7 @@ public class Consumidor implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // this.prod.des();
+            //this.prod.consume();
         }
     }
 

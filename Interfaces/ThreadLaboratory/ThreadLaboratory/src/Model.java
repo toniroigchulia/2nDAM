@@ -1,12 +1,12 @@
 public class Model {
     private LabParameters config;
     private LabResults results;
-    private Product produc;
+    private Contador produc;
     private Thread[] hilosProductor = new Thread[200];
     private Thread[] hilosConsumidor = new Thread[400];
 
     public Model() {
-        this.produc = new Product(0);
+        this.produc = new Contador(0);
     }
 
     public void calc() {
