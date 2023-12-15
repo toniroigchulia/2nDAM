@@ -1,17 +1,10 @@
-public class Product {
+public class Product extends Contador{
+
     private int producedQuantity;
     private int consumedQuantity;
-    private int value;
-
-    public Product(int v){
-        this.value = v;
-    }
-
-    public void produce(){
-
-    }
-
-    public void consume(){
-
+    
+    public Product(int v) {
+        super(v);
+        
     }
 }

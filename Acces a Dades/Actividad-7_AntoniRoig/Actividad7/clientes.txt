@@ -1,16 +1,7 @@
-[INICI_FITXER]
-[INICI_CLIENT]
-Jesus         
-Fresneda      
-23            
-11111111      
-aaa           
-[FI_CLIENT]   
-[INICI_CLIENT]
-Paco          
-Martinez      
-30            
-22222222      
-bbb           
-[FI_CLIENT]   
-[FI_FITXER]
+=== [CLIENT] ===
+[Identificador] - 0
+[NOM] - null
+[COGNOM] - null
+[EDAT] - 0
+[TELÈFON] - null
+[EMAIL] - null
