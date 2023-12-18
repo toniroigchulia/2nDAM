@@ -13,11 +13,13 @@ public class Viewer extends JFrame implements Runnable {
     private ActionListener listener;
     private ControlPanel controlPanel;
     private ParameterPanel parameterPanel;
+    private Thread parameterThread;
     private ResultatPanel resultatPanel;
 
     // METODOS CONSTRUCTORES
     public Viewer(LaboratoryController controller) {
         this.controller = controller;
+        this.labParameters = new DTOLabParameters();
         this.listener = new Listener();
         this.configureJFrame();
     }
@@ -54,6 +56,8 @@ public class Viewer extends JFrame implements Runnable {
 
         c.gridx = 1;
         this.resultatPanel = new ResultatPanel();
+        this.parameterThread = new Thread(this.resultatPanel);
+        this.parameterThread.start();
         panel.add(this.resultatPanel, c);
 
         c.gridx = 2;
@@ -80,6 +84,7 @@ public class Viewer extends JFrame implements Runnable {
             switch (str) {
                 case "Play":
                     labParameters.setPlaying(true);
+                    controller.getModel().start();
 
                     controller.applyConfig(labParameters);
                     //System.out.println("Play");

@@ -65,6 +65,7 @@ public class ResultatPanel extends JPanel implements Runnable {
     public ResultatPanel() {
         this.setLayout(new GridBagLayout());
         addContentToPane();
+        this.labResults = new DTOLabResults();
     }
 
     private void addContentToPane() {
@@ -243,6 +244,7 @@ public class ResultatPanel extends JPanel implements Runnable {
     public void run() {
         try {
             while (true) {
+                System.out.println(this.labResults.getProductosActuales()+"");
                 this.textContador.setText(this.labResults.getProductosActuales()+"");
                 this.textCrearThreads.setText(this.labResults.getMsCrearThread());
                 this.textStartThreads.setText(this.labResults.getMsArrancarThread());
@@ -259,7 +261,7 @@ public class ResultatPanel extends JPanel implements Runnable {
                 Thread.sleep(50);
             }
         } catch (Exception e) {
-            
+            System.out.println(e);
         }
     }
 }

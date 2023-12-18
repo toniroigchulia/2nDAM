@@ -1,30 +1,34 @@
 import java.util.Random;
 
 public class Consumidor implements Runnable {
-    private Contador prod;
+    private Product prod;
+    private int items;
+    private int tempsProd;
+    private boolean randFix;
     private Random random = new Random();
 
-    public Consumidor(Contador v) {
+    public Consumidor(Product v, int items, int tempsProd, boolean randFix) {
         this.prod = v;
+        this.items = items;
+        this.tempsProd = tempsProd;
+        this.randFix = randFix;
     }
 
     public void consumir() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < items; i++) {
             try {
-                Thread.sleep(random.nextInt(100));
+                if (!randFix){
+
+                    Thread.sleep(random.nextInt(tempsProd));
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //this.prod.consume();
+            this.prod.consume();
         }
     }
 
     public void run() {
-        // comp.setTiempoInicio(System.currentTimeMillis());
-        // comp.sumConsumidoresConsumiendo();
         this.consumir();
-        // comp.resConsumidoresConsumiendo();
-        // comp.sumConsumidoresConsumidos();
-        // comp.setTiempoFinal(System.currentTimeMillis());
     }
 }
