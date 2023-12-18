@@ -12,7 +12,9 @@ import javax.swing.JFrame;
 
 public class Viewer extends JFrame implements ComponentListener, ActionListener, ItemListener, Runnable{
     private LaboratoryController controller;
-
+    
+    private DTOLabParameters labParameters;
+    
     private ControlPanel controlPanel;
     private ParameterPanel parameterPanel;
     private ResultatPanel resultatPanel;
@@ -68,7 +70,7 @@ public class Viewer extends JFrame implements ComponentListener, ActionListener,
         try {
             while(true){
                 this.resultatPanel.setLabResults(this.controller.getResults());
-                
+                this.controller.applyConfig(this.labParameters);
                 Thread.sleep(50);
             }
         } catch (Exception e) {

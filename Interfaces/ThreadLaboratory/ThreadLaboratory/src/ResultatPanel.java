@@ -241,8 +241,25 @@ public class ResultatPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-
+        try {
+            while (true) {
+                this.textContador.setText(this.labResults.getProductosActuales()+"");
+                this.textCrearThreads.setText(this.labResults.getMsCrearThread());
+                this.textStartThreads.setText(this.labResults.getMsArrancarThread());
+                this.textProcesConsumidors.setText(this.labResults.getMsProcesoConsumidor());
+                this.textProcesProductors.setText(this.labResults.getMsProcesoProductor());
+                this.textItemsProduitProductor.setText(this.labResults.getQuantityProduit()+"");
+                this.textItemConsumitConsumidor.setText(this.labResults.getQuantityConsumit()+"");
+                this.textFilsProductorsProcesant.setText(this.labResults.getQuantityProductorProcesando()+"");
+                this.textFilsAcabatsProductors.setText(this.labResults.getQuantityProductorFinalizados()+"");
+                this.textFilsProductorsPendents.setText(this.labResults.getQuantityProductorPendientes()+"");
+                this.textFilsConsumidorsConsumint.setText(this.labResults.getQuantityConsumidorProcesando()+"");
+                this.textFilsConsumidorsFinalitzats.setText(this.labResults.getQuantityConsumidorFinalizados()+"");
+                this.textFilsConsumidorsPendents.setText(this.labResults.getQuantityConsumidorPendientes()+"");
+                Thread.sleep(50);
+            }
+        } catch (Exception e) {
+            
         }
     }
 }
