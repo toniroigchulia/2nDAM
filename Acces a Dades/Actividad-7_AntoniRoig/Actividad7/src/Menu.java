@@ -113,10 +113,37 @@ public class Menu {
 
     public static void afegirClient(List<Client> clients, String nomFitxer) {
         Client nouClient = new Client();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Introdueix l'identificador del client: ");
+        int identificador = scanner.nextInt();
+        nouClient.setIdentificador(identificador);
+
+        System.out.print("Introdueix el nom del client: ");
+        String nom = scanner.nextLine();
+        nouClient.setNom(nom);
+
+        System.out.println("Introdueix el cognom del client: ");
+        String  cognom = scanner.nextLine();
+        nouClient.setCognom(cognom);
+
+        System.out.println("Introdueix la edat del client: ");
+        int edat = scanner.nextInt();
+        nouClient.setEdat(edat);
+
+        System.out.println("Introdueix el mail del client: ");
+        String email = scanner.nextLine();
+        nouClient.setEmail(email);
+
+        System.out.println("Introdueix el telefon del client: ");
+        String telefon = scanner.nextLine();
+        nouClient.setTelefon(telefon);
+
 
         clients.add(nouClient);
         escriureClients(nomFitxer, clients);
         System.out.println("Nou client afegit correctament.");
+        scanner.close();
     }
 
     public static void eliminarClient(List<Client> clients, String nomFitxer) {

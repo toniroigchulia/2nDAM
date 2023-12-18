@@ -5,7 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-public class ResultatPanel extends JPanel {
+public class ResultatPanel extends JPanel implements Runnable {
+
+    //DTOLabResults
+    private DTOLabResults labResults;
 
     // Contador productes totals
     private JLabel contador;
@@ -226,5 +229,20 @@ public class ResultatPanel extends JPanel {
         textFilsConsumidorsPendents = new JTextField();
         textFilsConsumidorsPendents.setText("0");
         this.add(textFilsConsumidorsPendents, c);
+    }
+    
+    public DTOLabResults getLabResults() {
+        return labResults;
+    }
+
+    public void setLabResults(DTOLabResults labResults) {
+        this.labResults = labResults;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+
+        }
     }
 }

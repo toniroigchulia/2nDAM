@@ -1,6 +1,6 @@
 public class Model {
-    private LabParameters config;
-    private LabResults results;
+    private DTOLabParameters config;
+    private DTOLabResults results;
     private Contador produc;
     private Thread[] hilosProductor = new Thread[200];
     private Thread[] hilosConsumidor = new Thread[400];
@@ -23,11 +23,19 @@ public class Model {
         }
     }
 
-    public void setConfig(LabParameters config){
+    public DTOLabParameters getConfig() {
+        return config;
+    }
+
+    public void setConfig(DTOLabParameters config) {
         this.config = config;
     }
 
-    public LabResults getResults(){
-        return this.results;
+    public DTOLabResults getResults() {
+        return results;
+    }
+
+    public void setResults(DTOLabResults results) {
+        this.results = results;
     }
 }

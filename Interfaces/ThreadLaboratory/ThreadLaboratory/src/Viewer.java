@@ -67,7 +67,8 @@ public class Viewer extends JFrame implements ComponentListener, ActionListener,
     public void run() {
         try {
             while(true){
-                this.controller.getResults();
+                this.resultatPanel.setLabResults(this.controller.getResults());
+                
                 Thread.sleep(50);
             }
         } catch (Exception e) {

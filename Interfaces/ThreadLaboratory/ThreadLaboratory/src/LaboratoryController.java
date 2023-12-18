@@ -14,11 +14,11 @@ public class LaboratoryController {
         threadView.start();
     }
 
-    public LabResults getResults(){
+    public DTOLabResults getResults(){
         return this.model.getResults();
     }
 
-    public void applyConfig(LabParameters config){
+    public void applyConfig(DTOLabParameters config){
         this.model.setConfig(config);
     }
 }
