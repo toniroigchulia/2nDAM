@@ -1,24 +1,25 @@
 public class Model {
     private DTOLabParameters config;
     private DTOLabResults results;
-    private Contador produc;
-    private Thread[] hilosProductor = new Thread[200];
-    private Thread[] hilosConsumidor = new Thread[400];
+    private Product produc;
 
-    public Model() {
-        this.produc = new Contador(0);
+    public Model(DTOLabParameters config) {
+        this.config = config;
+        this.results = new DTOLabResults();
+        this.produc = new Product(0, results, config.isProtegerRegCritic(), config.isStockPositivo());
     }
 
-    public void calc() {
-        for (int i = 0; i < 200; i++) {
-
-            hilosProductor[i] = (new Thread(new Productor(produc)));
+    public void start() {
+        Thread[] hilosProductor = new Thread[config.getProductores()];
+        for (int i = 0; i < config.getProductores(); i++) {
+            hilosProductor[i] = (new Thread(new Productor(produc, config.getQuantityItemsP(), config.getTempsMaximP(), config.isTempsMaximCheckBoxP())));
             hilosProductor[i].start();
         }
 
-        for (int i = 0; i < 400; i++) {
+        Thread[] hilosConsumidor = new Thread[config.getConsumidores()];
+        for (int i = 0; i < config.getConsumidores(); i++) {
 
-            hilosConsumidor[i] = (new Thread(new Consumidor(produc)));
+            hilosConsumidor[i] = (new Thread(new Consumidor(produc, config.getQuantityItemsC(), config.getTempsMaximC(), config.isTempsMaximCheckBoxC())));
             hilosConsumidor[i].start();
         }
     }

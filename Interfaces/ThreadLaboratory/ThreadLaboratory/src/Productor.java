@@ -1,30 +1,33 @@
 import java.util.Random;
 
 public class Productor implements Runnable {
-    private Contador prod;
+    private Product prod;
+    private int items;
+    private int tempsProd;
+    private boolean randFix;
     private Random random = new Random();
 
-    public Productor(Contador p) {
+    public Productor(Product p, int items, int tempsProd, boolean randFix) {
         this.prod = p;
+        this.items = items;
+        this.tempsProd = tempsProd;
+        this.randFix = randFix;
     }
 
     public void producir() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < items; i++) {
             try {
-                Thread.sleep(random.nextInt(100));
+                if (!randFix){
+                    Thread.sleep(random.nextInt(tempsProd));
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //this.prod.produce();
+            this.prod.produce();
         }
     }
 
     public void run() {
-        // comp.setTiempoInicio(System.currentTimeMillis());
-        // comp.sumProductoresTraballando();
         this.producir();
-        // comp.resProductoresTraballando();
-        // comp.sumProductoresAcabados();
-        // comp.setTiempoFinal(System.currentTimeMillis());
     }
 }

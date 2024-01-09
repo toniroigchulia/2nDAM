@@ -9,6 +9,9 @@ public class DTOLabParameters {
     private boolean tempsMaximCheckBoxC;
     private int tempsMaximC;
 
+    private boolean protegerRegCritic;
+    private boolean stockPositivo;
+
     private boolean playing;
 
     public DTOLabParameters(){
@@ -20,6 +23,9 @@ public class DTOLabParameters {
         this.quantityItemsC = 100;
         this.tempsMaximCheckBoxC = false;
         this.tempsMaximC = 100;
+        this.protegerRegCritic = false;
+        this.stockPositivo = false;
+        this.playing = false;
     }
 
     public int getProductores() {
@@ -92,5 +98,21 @@ public class DTOLabParameters {
 
     public void setPlaying(boolean playing) {
         this.playing = playing;
+    }
+
+    public boolean isProtegerRegCritic() {
+        return protegerRegCritic;
+    }
+
+    public void setProtegerRegCritic(boolean protegerRegCritic) {
+        this.protegerRegCritic = protegerRegCritic;
+    }
+
+    public boolean isStockPositivo() {
+        return stockPositivo;
+    }
+
+    public void setStockPositivo(boolean stockPositivo) {
+        this.stockPositivo = stockPositivo;
     }
 }

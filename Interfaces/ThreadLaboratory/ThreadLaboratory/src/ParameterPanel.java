@@ -8,6 +8,8 @@ import javax.swing.JToggleButton;
 
 public class ParameterPanel extends JPanel {
 
+    private DTOLabParameters labParameters;
+
     private JLabel productors;
     private JTextField textProductors;
 
@@ -30,9 +32,11 @@ public class ParameterPanel extends JPanel {
     private JLabel tempsMaximConsumir;
     private JTextField textTempsMaximConsumir;
 
-    public ParameterPanel() {
+    public ParameterPanel(DTOLabParameters labParameters) {
+        this.labParameters = labParameters;
         this.setLayout(new GridBagLayout());
         addContentToPane();
+        setDefaultFieldsValues();
     }
 
     private void addContentToPane() {
@@ -50,7 +54,6 @@ public class ParameterPanel extends JPanel {
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
         textProductors = new JTextField();
-        textProductors.setText("200");
         this.add(textProductors, c);
 
         c.insets = new Insets(10, 10, 1, 10);
@@ -61,7 +64,6 @@ public class ParameterPanel extends JPanel {
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
         textQuanItemProductor = new JTextField();
-        textQuanItemProductor.setText("100");
         this.add(textQuanItemProductor, c);
 
         c.insets = new Insets(10, 10, 10, 10);
@@ -78,7 +80,7 @@ public class ParameterPanel extends JPanel {
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
         textTempsMaximProduccio = new JTextField();
-        textTempsMaximProduccio.setText("100");
+
         this.add(textTempsMaximProduccio, c);
 
         // Consumidors
@@ -90,7 +92,6 @@ public class ParameterPanel extends JPanel {
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
         textConsumidors = new JTextField();
-        textConsumidors.setText("400");
         this.add(textConsumidors, c);
 
         c.insets = new Insets(10, 10, 1, 10);
@@ -101,7 +102,6 @@ public class ParameterPanel extends JPanel {
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
         textQuantItemConsumidor = new JTextField();
-        textQuantItemConsumidor.setText("100");
         this.add(textQuantItemConsumidor, c);
 
         c.insets = new Insets(10, 10, 10, 10);
@@ -118,7 +118,139 @@ public class ParameterPanel extends JPanel {
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
         textTempsMaximConsumir = new JTextField();
-        textTempsMaximConsumir.setText("100");
+
         this.add(textTempsMaximConsumir, c);
+    }
+
+    public void setDefaultFieldsValues(){
+        textProductors.setText(labParameters.getProductores()+"");
+        textQuanItemProductor.setText(labParameters.getQuantityItemsP()+"");
+        tempsProduccio.setSelected(labParameters.isTempsMaximCheckBoxP());
+        textTempsMaximProduccio.setText(labParameters.getTempsMaximP()+"");
+
+        textConsumidors.setText(labParameters.getConsumidores()+"");
+        textQuantItemConsumidor.setText(labParameters.getQuantityItemsC()+"");
+        tempsConsumir.setSelected(labParameters.isTempsMaximCheckBoxC());
+        textTempsMaximConsumir.setText(labParameters.getTempsMaximC()+"");
+    }
+
+    public DTOLabParameters getLabParameters() {
+        return labParameters;
+    }
+
+    public void setLabParameters(DTOLabParameters labParameters) {
+        this.labParameters = labParameters;
+    }
+
+    public JLabel getProductors() {
+        return productors;
+    }
+
+    public void setProductors(JLabel productors) {
+        this.productors = productors;
+    }
+
+    public JTextField getTextProductors() {
+        return textProductors;
+    }
+
+    public void setTextProductors(JTextField textProductors) {
+        this.textProductors = textProductors;
+    }
+
+    public JLabel getQuantItemProductor() {
+        return quantItemProductor;
+    }
+
+    public void setQuantItemProductor(JLabel quantItemProductor) {
+        this.quantItemProductor = quantItemProductor;
+    }
+
+    public JTextField getTextQuanItemProductor() {
+        return textQuanItemProductor;
+    }
+
+    public void setTextQuanItemProductor(JTextField textQuanItemProductor) {
+        this.textQuanItemProductor = textQuanItemProductor;
+    }
+
+    public JToggleButton getTempsProduccio() {
+        return tempsProduccio;
+    }
+
+    public void setTempsProduccio(JToggleButton tempsProduccio) {
+        this.tempsProduccio = tempsProduccio;
+    }
+
+    public JLabel getTempsMaximProduccio() {
+        return tempsMaximProduccio;
+    }
+
+    public void setTempsMaximProduccio(JLabel tempsMaximProduccio) {
+        this.tempsMaximProduccio = tempsMaximProduccio;
+    }
+
+    public JTextField getTextTempsMaximProduccio() {
+        return textTempsMaximProduccio;
+    }
+
+    public void setTextTempsMaximProduccio(JTextField textTempsMaximProduccio) {
+        this.textTempsMaximProduccio = textTempsMaximProduccio;
+    }
+
+    public JLabel getConsumidors() {
+        return consumidors;
+    }
+
+    public void setConsumidors(JLabel consumidors) {
+        this.consumidors = consumidors;
+    }
+
+    public JTextField getTextConsumidors() {
+        return textConsumidors;
+    }
+
+    public void setTextConsumidors(JTextField textConsumidors) {
+        this.textConsumidors = textConsumidors;
+    }
+
+    public JLabel getQuantItemConsumidors() {
+        return quantItemConsumidors;
+    }
+
+    public void setQuantItemConsumidors(JLabel quantItemConsumidors) {
+        this.quantItemConsumidors = quantItemConsumidors;
+    }
+
+    public JTextField getTextQuantItemConsumidor() {
+        return textQuantItemConsumidor;
+    }
+
+    public void setTextQuantItemConsumidor(JTextField textQuantItemConsumidor) {
+        this.textQuantItemConsumidor = textQuantItemConsumidor;
+    }
+
+    public JToggleButton getTempsConsumir() {
+        return tempsConsumir;
+    }
+
+    public void setTempsConsumir(JToggleButton tempsConsumir) {
+        this.tempsConsumir = tempsConsumir;
+    }
+
+    public JLabel getTempsMaximConsumir() {
+        return tempsMaximConsumir;
+    }
+
+    public void setTempsMaximConsumir(JLabel tempsMaximConsumir) {
+        this.tempsMaximConsumir = tempsMaximConsumir;
+    }
+
+    public JTextField getTextTempsMaximConsumir() {
+        return textTempsMaximConsumir;
+    }
+
+    public void setTextTempsMaximConsumir(JTextField textTempsMaximConsumir) {
+        this.textTempsMaximConsumir = textTempsMaximConsumir;
     }
 }
