@@ -1,21 +1,18 @@
 import Engine.*;
 import Comunications.*;
 
-public class TGPeerController {
-    private TGController tgController;
+public class TGController {
+    private TGLocalController tgController;
     private TGComunications tgComunications;
-    private GameRules gameRules;
     public static void main(String[] args) throws Exception {
     
-        TGPeerController peerController = new TGPeerController();
+        TGController peerController = new TGController();
         peerController.init();
     }
     
-    
     public void init() {
-        this.tgController = new TGController();
+        this.tgController = new TGLocalController();
         this.tgComunications = new TGComunications();
-        this.gameRules = new GameRules();
     }
     
     public void addBall(){

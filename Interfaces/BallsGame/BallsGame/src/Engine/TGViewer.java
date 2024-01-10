@@ -8,7 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 public class TGViewer extends JFrame implements MouseListener {
-    private TGController controller;
+    private TGLocalController controller;
     private ControlPanel controlPanel;
     private VisualPanel visualPanel;
     private int xSize = 920;
@@ -17,7 +17,7 @@ public class TGViewer extends JFrame implements MouseListener {
     private Vector<Integer> ballVelocity;
     private Vector<Integer> ballInitPosition;
 
-    public TGViewer(TGController controller) {
+    public TGViewer(TGLocalController controller) {
         this.controlPanel = new ControlPanel();
         this.controller = controller;
         
@@ -48,7 +48,7 @@ public class TGViewer extends JFrame implements MouseListener {
         this.add(visualPanel, c);
     }
     
-    public ArrayList<VisualObject> getVisualElements() {
+    public ArrayList<Ball> getVisualElements() {
         return this.controller.getVisualElements();
     }
 
@@ -78,5 +78,61 @@ public class TGViewer extends JFrame implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    public TGLocalController getController() {
+        return controller;
+    }
+
+    public void setController(TGLocalController controller) {
+        this.controller = controller;
+    }
+
+    public ControlPanel getControlPanel() {
+        return controlPanel;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
+    }
+
+    public VisualPanel getVisualPanel() {
+        return visualPanel;
+    }
+
+    public void setVisualPanel(VisualPanel visualPanel) {
+        this.visualPanel = visualPanel;
+    }
+
+    public int getxSize() {
+        return xSize;
+    }
+
+    public void setxSize(int xSize) {
+        this.xSize = xSize;
+    }
+
+    public int getySize() {
+        return ySize;
+    }
+
+    public void setySize(int ySize) {
+        this.ySize = ySize;
+    }
+
+    public Vector<Integer> getBallVelocity() {
+        return ballVelocity;
+    }
+
+    public void setBallVelocity(Vector<Integer> ballVelocity) {
+        this.ballVelocity = ballVelocity;
+    }
+
+    public Vector<Integer> getBallInitPosition() {
+        return ballInitPosition;
+    }
+
+    public void setBallInitPosition(Vector<Integer> ballInitPosition) {
+        this.ballInitPosition = ballInitPosition;
     }
 }
