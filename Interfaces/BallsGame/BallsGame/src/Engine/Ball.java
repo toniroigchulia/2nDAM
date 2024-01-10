@@ -11,6 +11,7 @@ public class Ball implements VisualObject, Runnable{
     private boolean alive = true;
     private TGModel model;
     private int rad = 20;
+    private int mass = 10;
     
     public Ball(TGModel model, Vector<Integer> velocity, Vector<Integer> position) {
         this.velocity = simplifyVelocity(velocity);
@@ -119,5 +120,13 @@ public class Ball implements VisualObject, Runnable{
 
     public void setNextPosition(Vector<Integer> nextPosition) {
         this.nextPosition = nextPosition;
+    }
+
+    public int getMass() {
+        return mass;
+    }
+
+    public void setMass(int mass) {
+        this.mass = mass;
     }
 }

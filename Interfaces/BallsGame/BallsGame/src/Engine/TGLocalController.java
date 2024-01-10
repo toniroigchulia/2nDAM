@@ -16,19 +16,46 @@ public class TGLocalController {
 
     public synchronized void checkBallColison(Ball mainBall, ArrayList<Ball> ballsColiding) {
         // Colision contra otras bolas
-        
+        if (ballsColiding.size() > 0) {
+            for (int i = 0; i < ballsColiding.size(); i++) {
+
+                ballToBallBounce(mainBall, ballsColiding.get(i));
+            }
+        }
 
         // Colision contra bordes
         borderBounce(mainBall);
 
         mainBall.move();
     }
-    
-    private void borderBounce(Ball mainBall){
+
+    private void ballToBallBounce(Ball mainBall, Ball otherBall) {
+        Vector<Float> mainVelocity = new Vector<>();
+        Vector<Float> otherVelocity = new Vector<>();
+
+        mainVelocity.add(0, (float) (mainBall.getVelocity().get(0) - (otherBall.getVelocity().get(0))));
+        mainVelocity.add(1, (float) (mainBall.getVelocity().get(1) - (otherBall.getVelocity().get(0))));
+
+        otherVelocity.add(0, (float) (otherBall.getVelocity().get(0) + (mainBall.getVelocity().get(0))));
+        otherVelocity.add(1, (float) (otherBall.getVelocity().get(1) + (mainBall.getVelocity().get(1))));
+
+        if (mainVelocity.get(0) > 0 && otherVelocity.get(0) > 0) {
+            mainVelocity.set(0, mainVelocity.get(0) * (-1));
+        }
+
+        if (mainVelocity.get(1) > 0 && otherVelocity.get(1) > 0) {
+            mainVelocity.set(1, mainVelocity.get(1) * (-1));
+        }
+
+        mainBall.setVelocity(mainVelocity);
+        otherBall.setVelocity(otherVelocity);
+    }
+
+    private void borderBounce(Ball mainBall) {
         // Colision contra bordes
         Vector<Integer> canvaSize = this.getCanvasSize();
-        
-        //Bordes Laterales
+
+        // Bordes Laterales
         if (mainBall.getNextPosition().get(0) < 0) {
 
             if (!this.rules.checkGate()) {
@@ -48,7 +75,7 @@ public class TGLocalController {
                 removeBall(mainBall);
             }
         }
-        
+
         // Techo y Suelo
         if (mainBall.getNextPosition().get(1) < 0) {
 
