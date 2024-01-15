@@ -39,11 +39,13 @@ public class TGModel {
         ArrayList<Ball> ballsColiding = new ArrayList<>();
 
         for (int i = 0; i < visualElements.size(); i++) {
-            if ((isColiding(ball, visualElements.get(i))) && ball != visualElements.get(i)) {
+            if ((isColiding(ball, visualElements.get(i))) && ball != visualElements.get(i) && !ball.isBounceInmunity()) {
+                visualElements.get(i).setBounceInmunity(true);
                 ballsColiding.add(visualElements.get(i));
             }
         }
-
+        
+        ball.setBounceInmunity(false);
         this.controller.checkBallColison(ball, ballsColiding);
     }
 

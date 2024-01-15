@@ -5,9 +5,10 @@ import java.awt.Graphics;
 import java.util.Vector;
 
 public class Ball implements VisualObject, Runnable{
-    private Vector<Integer> position = new Vector<>();
     private Vector<Integer> nextPosition = new Vector<>();
+    private Vector<Integer> position = new Vector<>();
     private Vector<Float> velocity = new Vector<>();
+    private boolean bounceInmunity;
     private boolean alive = true;
     private TGModel model;
     private int rad = 20;
@@ -24,8 +25,8 @@ public class Ball implements VisualObject, Runnable{
         int x = ballVelocity.get(0);
         int y = ballVelocity.get(1);
 
-        float normalizedX = (float) (x / 20);
-        float normalizedY = (float) (y / 20);
+        float normalizedX = (float) (x / 30);
+        float normalizedY = (float) (y / 30);
 
         vectorFloat.add(normalizedX);
         vectorFloat.add(normalizedY);
@@ -33,7 +34,7 @@ public class Ball implements VisualObject, Runnable{
         return vectorFloat;
     }
     
-    private void checkNextMove(){
+    public void checkNextMove(){
         this.nextPosition = new Vector<>();
         nextPosition.add(Math.round(position.get(0) + (velocity.get(0))));
         nextPosition.add(Math.round(position.get(1) + (velocity.get(1))));
@@ -60,6 +61,20 @@ public class Ball implements VisualObject, Runnable{
     }
     
     @Override
+    public void bounce(Vector<Integer> bouncePosition, int bounceDirection) {
+        position.set(0, bouncePosition.get(0));
+        position.set(1, bouncePosition.get(1));
+        
+        if(bounceDirection == 0){
+            
+            this.velocity.set(0, this.velocity.get(0) * (-1));
+        } else {
+            
+            this.velocity.set(1, this.velocity.get(1) * (-1));
+        }
+    }
+    
+    @Override
     public Graphics paint(Graphics g) {
         g.setColor(Color.red);
         g.fillOval(this.position.get(0) - rad, this.position.get(1) - rad, rad, rad);
@@ -68,10 +83,6 @@ public class Ball implements VisualObject, Runnable{
 
     @Override
     public void kill() {
-    }
-
-    @Override
-    public void bounce() {
     }
 
     public Vector<Integer> getPosition() {
@@ -129,4 +140,14 @@ public class Ball implements VisualObject, Runnable{
     public void setMass(int mass) {
         this.mass = mass;
     }
+
+    public boolean isBounceInmunity() {
+        return bounceInmunity;
+    }
+
+    public void setBounceInmunity(boolean bounceInmunity) {
+        this.bounceInmunity = bounceInmunity;
+    }
+    
+    
 }

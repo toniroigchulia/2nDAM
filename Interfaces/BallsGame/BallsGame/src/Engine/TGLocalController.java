@@ -18,84 +18,101 @@ public class TGLocalController {
         // Colision contra otras bolas
         if (ballsColiding.size() > 0) {
             for (int i = 0; i < ballsColiding.size(); i++) {
-
                 ballToBallBounce(mainBall, ballsColiding.get(i));
             }
         }
 
         // Colision contra bordes
-        borderBounce(mainBall);
+        if (borderBounce(mainBall)) {
+            mainBall.checkNextMove();
+        }
 
         mainBall.move();
     }
 
-    private void ballToBallBounce(Ball mainBall, Ball otherBall) {
-        Vector<Float> mainVelocity = new Vector<>();
-        Vector<Float> otherVelocity = new Vector<>();
+    private void ballToBallBounce(Ball pelota1, Ball pelota2) {
+        Vector<Float> velocidadRelativa = new Vector<>();
+        velocidadRelativa.add(0, pelota2.getVelocity().get(0) - pelota1.getVelocity().get(0));
+        velocidadRelativa.add(1, pelota2.getVelocity().get(1) - pelota1.getVelocity().get(1));
 
-        mainVelocity.add(0, (float) (mainBall.getVelocity().get(0) - (otherBall.getVelocity().get(0))));
-        mainVelocity.add(1, (float) (mainBall.getVelocity().get(1) - (otherBall.getVelocity().get(0))));
+        double distanciaX = pelota2.getNextPosition().get(0) - pelota1.getNextPosition().get(0);
+        double distanciaY = pelota2.getNextPosition().get(1) - pelota1.getNextPosition().get(1);
+        double distancia = Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY);
 
-        otherVelocity.add(0, (float) (otherBall.getVelocity().get(0) + (mainBall.getVelocity().get(0))));
-        otherVelocity.add(1, (float) (otherBall.getVelocity().get(1) + (mainBall.getVelocity().get(1))));
+        double normalX = distanciaX / distancia;
+        double normalY = distanciaY / distancia;
 
-        if (mainVelocity.get(0) > 0 && otherVelocity.get(0) > 0) {
-            mainVelocity.set(0, mainVelocity.get(0) * (-1));
-        }
+        double velocidadRelativaEnNormal = velocidadRelativa.get(0) * normalX + velocidadRelativa.get(1) * normalY;
 
-        if (mainVelocity.get(1) > 0 && otherVelocity.get(1) > 0) {
-            mainVelocity.set(1, mainVelocity.get(1) * (-1));
-        }
+        double cambioVelocidadPelota1X = 2 * velocidadRelativaEnNormal * normalX;
+        double cambioVelocidadPelota1Y = 2 * velocidadRelativaEnNormal * normalY;
 
-        mainBall.setVelocity(mainVelocity);
-        otherBall.setVelocity(otherVelocity);
+        double cambioVelocidadPelota2X = velocidadRelativa.get(0) - cambioVelocidadPelota1X;
+        double cambioVelocidadPelota2Y = velocidadRelativa.get(1) - cambioVelocidadPelota1Y;
+
+        pelota1.getVelocity().set(0, (float) (pelota1.getVelocity().get(0) + cambioVelocidadPelota1X));
+        pelota1.getVelocity().set(1, (float) (pelota1.getVelocity().get(1) + cambioVelocidadPelota1Y));
+
+        pelota2.getVelocity().set(0,(float) (pelota2.getVelocity().get(0) + cambioVelocidadPelota2X));
+        pelota2.getVelocity().set(1,(float) (pelota2.getVelocity().get(1) + cambioVelocidadPelota2Y));
     }
 
-    private void borderBounce(Ball mainBall) {
+
+    private boolean borderBounce(Ball mainBall) {
         // Colision contra bordes
         Vector<Integer> canvaSize = this.getCanvasSize();
-
+        Vector<Integer> bouncePosition = new Vector<>();
         // Bordes Laterales
-        if (mainBall.getNextPosition().get(0) < 0) {
+        if (mainBall.getNextPosition().get(0) <= 0) {
 
             if (!this.rules.checkGate()) {
 
-                mainBall.getVelocity().set(0, (mainBall.getVelocity().get(0)) * (-1));
+                bouncePosition.add(0);
+                bouncePosition.add(mainBall.getNextPosition().get(1));
+
+                mainBall.bounce(bouncePosition, 0);
             } else {
 
                 removeBall(mainBall);
             }
-        } else if (mainBall.getNextPosition().get(0) > canvaSize.get(0)) {
+
+            return true;
+        } else if (mainBall.getNextPosition().get(0) >= canvaSize.get(0)) {
 
             if (!this.rules.checkGate()) {
 
-                mainBall.getVelocity().set(0, (mainBall.getVelocity().get(0)) * (-1));
+                bouncePosition.add(canvaSize.get(0));
+                bouncePosition.add(mainBall.getNextPosition().get(1));
+
+                mainBall.bounce(bouncePosition, 0);
             } else {
 
                 removeBall(mainBall);
             }
+
+            return true;
         }
 
         // Techo y Suelo
-        if (mainBall.getNextPosition().get(1) < 0) {
+        if (mainBall.getNextPosition().get(1) <= 0) {
 
-            if (!this.rules.checkGate()) {
+            bouncePosition.add(mainBall.getNextPosition().get(0));
+            bouncePosition.add(0);
 
-                mainBall.getVelocity().set(1, (mainBall.getVelocity().get(1)) * (-1));
-            } else {
+            mainBall.bounce(bouncePosition, 1);
 
-                removeBall(mainBall);
-            }
-        } else if (mainBall.getNextPosition().get(1) > canvaSize.get(1)) {
+            return true;
+        } else if (mainBall.getNextPosition().get(1) >= canvaSize.get(1)) {
 
-            if (!this.rules.checkGate()) {
+            bouncePosition.add(mainBall.getNextPosition().get(0));
+            bouncePosition.add(canvaSize.get(1));
 
-                mainBall.getVelocity().set(1, (mainBall.getVelocity().get(1)) * (-1));
-            } else {
+            mainBall.bounce(bouncePosition, 1);
 
-                removeBall(mainBall);
-            }
+            return true;
         }
+
+        return false;
     }
 
     public Vector<Integer> getCanvasSize() {
