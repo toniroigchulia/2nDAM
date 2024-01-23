@@ -7,19 +7,19 @@ import MainController.TGController;
 public class TGComunications {
 
     private ArrayList<Channel> channels = new ArrayList<>();
-    private TGController tgController;
     private ClientConection clientConection;
     private ServerConection serverConection;
+    
+    private TGController tgController;
 
     public TGComunications(TGController tgController) {
         this.tgController = tgController;
-        this.clientConection = new ClientConection(this);
-        this.serverConection = new ServerConection(this);
         this.addChannels();
     }
 
     private void addChannels() {
-
+        channels.add(new Channel(this));
+        new Thread(channels.get(0)).start();
     }
 
     private void sendObject() {
@@ -28,5 +28,37 @@ public class TGComunications {
 
     private void addBall() {
 
+    }
+
+    public ArrayList<Channel> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(ArrayList<Channel> channels) {
+        this.channels = channels;
+    }
+
+    public ClientConection getClientConection() {
+        return clientConection;
+    }
+
+    public void setClientConection(ClientConection clientConection) {
+        this.clientConection = clientConection;
+    }
+
+    public ServerConection getServerConection() {
+        return serverConection;
+    }
+
+    public void setServerConection(ServerConection serverConection) {
+        this.serverConection = serverConection;
+    }
+
+    public TGController getTgController() {
+        return tgController;
+    }
+
+    public void setTgController(TGController tgController) {
+        this.tgController = tgController;
     }
 }

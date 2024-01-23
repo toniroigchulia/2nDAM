@@ -15,15 +15,13 @@ public class TGModel {
         Ball ball = new Ball(this, ballVelocity, ballInitPosition);
         this.visualElements.add(ball);
 
-        Thread ballThread = new Thread(ball);
-        ballThread.start();
+        new Thread(ball).start();
     }
 
     public void addBall(Ball ball) {
         this.visualElements.add(ball);
 
-        Thread ballThread = new Thread(ball);
-        ballThread.start();
+        new Thread(ball).start();
     }
 
     public void removeBall(Ball ball) {

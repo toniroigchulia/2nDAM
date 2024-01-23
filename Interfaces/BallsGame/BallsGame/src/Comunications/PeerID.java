@@ -1,4 +1,8 @@
 package Comunications;
-public class PeerID {
-    
+public class PeerID implements Runnable{
+
+    @Override
+    public void run() {
+
+    }
 }
