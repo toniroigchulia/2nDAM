@@ -18,11 +18,13 @@ public class TGComunications {
     }
 
     private void addChannels() {
-        channels.add(new Channel(this));
+        channels.add(new Channel(this, true));
+        channels.add(new Channel(this, false));
         new Thread(channels.get(0)).start();
+        new Thread(channels.get(1)).start();
     }
 
-    private void sendObject() {
+    private void sendBall() {
 
     }
 
@@ -30,6 +32,7 @@ public class TGComunications {
 
     }
 
+    // Getters And Setters
     public ArrayList<Channel> getChannels() {
         return channels;
     }

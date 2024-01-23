@@ -10,138 +10,103 @@ import java.net.Socket;
 public class Channel implements Runnable {
 
     private TGComunications tgComunications;
-    private TestChanel testChanel;
+    private TestChannel testChanel;
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private Socket socket;
+    private Socket SOCKET;
 
     private int sendTime;
     private long recievedTime;
 
     private Interlocutor interlocutor;
-    private boolean runState;
-    private boolean wasClient;
+    private boolean isClient;
 
-    public Channel(TGComunications tgComunications) {
-    
+    public Channel(TGComunications tgComunications, boolean isClient) {
+
         this.tgComunications = tgComunications;
+        this.isClient = isClient;
         this.interlocutor = new Interlocutor();
-        this.testChanel = new TestChanel(this, 10000);
-        new Thread(this.testChanel).start();
-        setSocket();
+        this.testChanel = new TestChannel(this, 10000);
     }
 
     @Override
     public void run() {
-        while (runState) {
-        
-            System.out.println("No se ha perdido la conexion");
+        setSocket();
+        while (true) {
+
             try {
-            
-                // Verificar si la conexión actual está cerrada
-                if (socket == null || socket.isClosed() || !socket.isConnected()) {
-                    System.out.println("Conexión perdida, intentando reconectar...");
-                    Thread.sleep(1000);
-                    reconnect();
-                }
 
                 // Leer mensajes entrantes
-                if (socket != null && socket.isConnected()) {
+                if (SOCKET != null && SOCKET.isConnected()) {
+                    System.out.println("Esperando un mensaje");
                     dataIn();
-                }
+                    System.out.println("Ha llegado un mensaje");
+                } else {
 
-                // Esperar un poco antes de verificar la conexión de nuevo
-                Thread.sleep(1000);
+                    System.out.println("Conexión perdida, intentando reconectar...");
+                    // Esperar un poco antes de verificar la conexión de nuevo
+                    Thread.sleep(5000);
+                }
             } catch (InterruptedException e) {
-            
-                System.out.println("Error en la reconexión: " + e);
+
+                System.out.println(e);
             }
         }
     }
 
     public void setSocket() {
         try {
-            boolean clientConection;
+            if (isClient) {
 
-            this.tgComunications.setClientConection(
-                    new ClientConection(this.tgComunications, interlocutor.getPort(), interlocutor.getIp()));
-            this.tgComunications.getClientConection().setIntentarReconectar(false);
-            this.tgComunications.getClientConection().run();
-            this.socket = this.tgComunications.getClientConection().getSocket();
-            clientConection = this.tgComunications.getClientConection().isConexionEstablecida();
-            if (clientConection) {
-
-                wasClient = true;
+                this.tgComunications.setClientConection(
+                        new ClientConection(this.tgComunications, interlocutor.getPORT(), interlocutor.getIP()));
+                this.tgComunications.getClientConection().setIntentarReconectar(true);
+                this.tgComunications.getClientConection().run();
+                this.SOCKET = this.tgComunications.getClientConection().getSOCKET();
                 System.out.println("Conexion establecida como cliente correctamente");
             } else {
 
-                this.tgComunications.getClientConection().setIntentarReconectar(true);
-                System.out.println("Abortando conexion como cliente...");
                 // Iniciar el servidor
                 this.tgComunications
-                        .setServerConection(new ServerConection(this.tgComunications, interlocutor.getPort()));
+                        .setServerConection(new ServerConection(this.tgComunications, 1620));
                 this.tgComunications.getServerConection().run();
-                this.socket = this.tgComunications.getServerConection().getClsock();
+                this.SOCKET = this.tgComunications.getServerConection().getCLSOCK();
                 System.out.println("Conexion establecida como servidor correctamente");
             }
 
-            System.out.println(socket);
+            System.out.println(this.SOCKET);
             // Inicializar los objetos BufferedReader y PrintWriter
-            OutputStream os = socket.getOutputStream();
+            OutputStream os = SOCKET.getOutputStream();
             this.out = new ObjectOutputStream(os);
-            InputStream is = socket.getInputStream();
+            InputStream is = SOCKET.getInputStream();
             this.in = new ObjectInputStream(is);
 
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-            throw new RuntimeException(ex);
-        }
-    }
+            new Thread(this.testChanel).start();
+        } catch (IOException e) {
 
-    public void reconnect() {
-        try {
-            // Iniciar servidor y esperar conexiones entrantes
-            System.out.println("Iniciando servidor...");
-            this.tgComunications.setServerConection(new ServerConection(this.tgComunications, interlocutor.getPort()));
-            this.tgComunications.getServerConection().run();
-            socket = this.tgComunications.getServerConection().getClsock();
-            TestChanel healthCareConnection = new TestChanel(this, 10000);
-            setTestChanel(healthCareConnection);
-            new Thread(healthCareConnection).start();
-
-            // Reinicializar los objetos BufferedReader y PrintWriter
-            this.in = new ObjectInputStream(socket.getInputStream());
-            this.out = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException ex) {
-
-            System.err.println("No se ha podido conectar");
-        } catch (NullPointerException e) {
-
-            System.out.println("Error en la conexión: " + e);
+            System.out.println(e);
         }
     }
 
     public synchronized void killSocket() {
         try {
-        
+
             stopTestChannel();
             in.close();
             out.close();
             if (this.tgComunications.getServerConection() != null) {
-            
-                socket.close();
+                SOCKET.close();
                 if (!this.tgComunications.getServerConection().isSocketClosed()) {
-                
                     this.tgComunications.getServerConection().killSocket();
                 }
             }
         } catch (IOException e) {
-        
+
             e.printStackTrace();
         } finally {
-        
-            socket = null;
+
+            SOCKET = null;
             System.err.println("Matando el socket...");
         }
     }
@@ -149,39 +114,35 @@ public class Channel implements Runnable {
     public void sendData() {
 
     }
-    
+
     public void dataIn() {
         Message m;
-        System.out.println("Esperando mensaje...");
         try {
-        
-            while (socket != null && socket.isConnected() && (m = (Message) in.readObject()) != null) {
-            
-                System.out.println("Recibido ping");
+
+            while (SOCKET != null && (m = (Message) in.readObject()) != null) {
                 if (m.isPing()) {
-                
+
                     System.out.println("Recibido ping");
-                    dataIn();
                     return;
                 }
-                
+
                 long time = (System.currentTimeMillis());
                 setRecievedTime(time);
             }
         } catch (Exception e) {
-        
+
             System.err.println("Error en la conexion");
             killSocket();
         }
     }
-    
-    public void stopTestChannel(){
+
+    public void stopTestChannel() {
         if (testChanel != null) {
             testChanel.pararEjecucion();
             testChanel = null;
         }
     }
-    
+
     public boolean ping() {
         try {
             System.out.println("Entra en ping");
@@ -192,7 +153,7 @@ public class Channel implements Runnable {
             return false;
         }
     }
-    
+
     // Getters And Setters
     public boolean isOk() {
         return false;
@@ -206,11 +167,11 @@ public class Channel implements Runnable {
         this.tgComunications = tgComunications;
     }
 
-    public TestChanel getTestChanel() {
+    public TestChannel getTestChanel() {
         return testChanel;
     }
 
-    public void setTestChanel(TestChanel testChanel) {
+    public void setTestChanel(TestChannel testChanel) {
         this.testChanel = testChanel;
     }
 
@@ -230,12 +191,12 @@ public class Channel implements Runnable {
         this.in = in;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public Socket getSOCKET() {
+        return SOCKET;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void setSOCKET(Socket socket) {
+        this.SOCKET = socket;
     }
 
     public int getSendTime() {
@@ -262,19 +223,11 @@ public class Channel implements Runnable {
         this.interlocutor = interlocutor;
     }
 
-    public boolean isRunState() {
-        return runState;
+    public boolean isClient() {
+        return isClient;
     }
 
-    public void setRunState(boolean runState) {
-        this.runState = runState;
-    }
-
-    public boolean isWasClient() {
-        return wasClient;
-    }
-
-    public void setWasClient(boolean wasClient) {
-        this.wasClient = wasClient;
+    public void setIsClient(boolean wasClient) {
+        this.isClient = wasClient;
     }
 }

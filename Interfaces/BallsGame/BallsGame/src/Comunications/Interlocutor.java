@@ -1,26 +1,18 @@
 package Comunications;
 
 public class Interlocutor {
-    private String ip;
-    private int port;
+    private String IP = "localhost";
+    private int PORT = 1616;
     
     public Interlocutor() {
     
     }
 
-    public String getIp() {
-        return ip;
+    public String getIP() {
+        return IP;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    public int getPORT() {
+        return PORT;
     }
 }

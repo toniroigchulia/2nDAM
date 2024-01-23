@@ -4,40 +4,42 @@ import java.net.Socket;
 
 public class ClientConection implements Runnable {
     private TGComunications tgComunications;
-    private int port;
-    private String ip;
-    private Socket socket;
+    private int PORT;
+    private String IP;
+    private Socket SOCKET;
 
     private boolean conexionEstablecida = false;
 
     private volatile boolean intentarReconectar = true;
 
-    public ClientConection(TGComunications tgComunications, int port, String ip) {
+    public ClientConection(TGComunications tgComunications, int PORT, String IP) {
         this.tgComunications = tgComunications;
-        this.port = port;
-        this.ip = ip;
+        this.PORT = PORT;
+        this.IP = IP;
     }
 
     @Override
     public void run() {
-        try {
-        
-            System.out.println("Conectando como cliente...");
-            while (this.socket == null) {
-            
-                this.socket = new Socket(this.ip, this.port);
-            }
-            conexionEstablecida = true;
-        } catch (Exception e) {
-        
-            System.out.println("Esperando conexión...");
-            try {
-                Thread.sleep(5000);
-                if (intentarReconectar) {
-                    run();
+        while (!conexionEstablecida) {
+            if (!conexionEstablecida && intentarReconectar) {
+
+                try {
+
+                    System.out.println("Conectando como cliente...");
+                    this.SOCKET = new Socket(this.IP, this.PORT);
+
+                    conexionEstablecida = true;
+                    
+                } catch (Exception e) {
+
+                    System.out.println("Esperando conexión...");
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+
+                        throw new RuntimeException(ex);
+                    }
                 }
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
             }
         }
     }
@@ -48,22 +50,6 @@ public class ClientConection implements Runnable {
 
     public void setTgComunications(TGComunications tgComunications) {
         this.tgComunications = tgComunications;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
     }
 
     public boolean isConexionEstablecida() {
@@ -82,12 +68,27 @@ public class ClientConection implements Runnable {
         this.intentarReconectar = intentarReconectar;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public int getPORT() {
+        return PORT;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void setPORT(int pORT) {
+        PORT = pORT;
     }
 
+    public String getIP() {
+        return IP;
+    }
+
+    public void setIP(String iP) {
+        IP = iP;
+    }
+
+    public Socket getSOCKET() {
+        return SOCKET;
+    }
+
+    public void setSOCKET(Socket sOCKET) {
+        SOCKET = sOCKET;
+    }
 }

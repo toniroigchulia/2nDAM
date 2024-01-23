@@ -23,8 +23,4 @@ public class TGController {
     public void removeBall(){
     
     }
-    
-    public void createAllChannels(){
-    
-    }
 }

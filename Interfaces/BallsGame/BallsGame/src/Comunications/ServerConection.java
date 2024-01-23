@@ -6,15 +6,15 @@ import java.net.Socket;
 
 public class ServerConection implements Runnable {
     private TGComunications tgComunications;
-    private int port;
-    private ServerSocket socket;
-    private Socket clsock;
+    private int PORT;
+    private ServerSocket SOCKET;
+    private Socket CLSOCK;
 
     public ServerConection(TGComunications tgComunications, int port) {
         this.tgComunications = tgComunications;
-        this.port = port;
+        this.PORT = port;
         try {
-            this.socket = new ServerSocket(port);
+            this.SOCKET = new ServerSocket(this.PORT);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -22,10 +22,11 @@ public class ServerConection implements Runnable {
 
     @Override
     public void run() {
+
         try {
 
             System.out.println("Conectando como servidor...");
-            this.clsock = socket.accept();
+            this.CLSOCK = SOCKET.accept();
         } catch (Exception e) {
 
             System.out.println("ServerConnector error: " + e);
@@ -34,14 +35,14 @@ public class ServerConection implements Runnable {
 
     public void killSocket() {
         try {
-            socket.close();
+            SOCKET.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public boolean isSocketClosed() {
-        return socket.isClosed();
+        return SOCKET.isClosed();
     }
 
     public TGComunications getTgComunications() {
@@ -52,27 +53,27 @@ public class ServerConection implements Runnable {
         this.tgComunications = tgComunications;
     }
 
-    public int getPort() {
-        return port;
+    public int getPORT() {
+        return PORT;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setPORT(int port) {
+        this.PORT = port;
     }
 
-    public ServerSocket getSocket() {
-        return socket;
+    public ServerSocket getSOCKET() {
+        return SOCKET;
     }
 
-    public void setSocket(ServerSocket socket) {
-        this.socket = socket;
+    public void setSOCKET(ServerSocket socket) {
+        this.SOCKET = socket;
     }
 
-    public Socket getClsock() {
-        return clsock;
+    public Socket getCLSOCK() {
+        return CLSOCK;
     }
 
-    public void setClsock(Socket clsock) {
-        this.clsock = clsock;
+    public void setCLSOCK(Socket clsock) {
+        this.CLSOCK = clsock;
     }
 }
