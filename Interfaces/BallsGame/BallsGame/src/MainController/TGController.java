@@ -13,7 +13,7 @@ public class TGController {
     
     public void init() {
         this.tgLocalController = new TGLocalController(this);
-        this.tgComunications = new TGComunications();
+        this.tgComunications = new TGComunications(this);
     }
     
     public void addBall(){
