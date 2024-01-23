@@ -7,22 +7,27 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
 public class App {
-    public static String xmlFilePath = "C:\\Users\\toni1\\OneDrive\\Documentos\\DAM\\2nDAM\\LibreriasJava\\bookings.xml"; // Ruta del archivo XML
+    public static String xmlFilePath = "C:\\Users\\toni1\\OneDrive\\Documentos\\DAM\\2nDAM\\LibreriasJava\\bookings.xml"; // Ruta
+                                                                                                                          // del
+                                                                                                                          // archivo
+                                                                                                                          // XML
     public static Connection conn;
+
     public static void main(String[] args) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DataBaseConnection.getConnection();
-        
+
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
         do {
-            System.out.println("\n"+"Menú de Reservas");
+            System.out.println("\n" + "Menú de Reservas");
             System.out.println("1) Insertar les reserves a la base de dades");
             System.out.println("2) Suprimir totes les dades de les reserves");
             System.out.println("3) Consultar les dades d'una reserva");
@@ -125,7 +130,8 @@ public class App {
     // Método para eliminar todas las reservas de la base de datos
     public static void eliminarTodasReservas() {
         try {
-            // Crear una sentencia SQL para eliminar todos los registros de la tabla 'bookings'
+            // Crear una sentencia SQL para eliminar todos los registros de la tabla
+            // 'bookings'
             String deleteQuery = "DELETE FROM reserva";
 
             // Crear un objeto Statement
@@ -146,11 +152,57 @@ public class App {
     // Método para consultar los datos de una reserva por su localizador
     public static void consultarReservaPorLocalizador() {
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("Introduce el localizador de la reserva: ");
-        String localitzador = scanner.next();
-        // Lógica para buscar y mostrar los datos de la reserva con el localizador dado
-        System.out.println("Método para consultar una reserva por localizador");
-        scanner.close();
+        String localizador = scanner.next();
+
+        try {
+            // Crear una sentencia SQL para seleccionar los datos de la reserva por
+            // localizador
+            String selectQuery = "SELECT * FROM reserva WHERE location_number = ?";
+
+            // Crear un objeto PreparedStatement
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+
+            // Establecer el localizador en la consulta SQL
+            preparedStatement.setString(1, localizador);
+
+            // Ejecutar la consulta
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Verificar si se encontraron resultados
+            if (resultSet.next()) {
+                // Obtener los datos de la reserva
+                String clientName = resultSet.getString("client_name");
+                String agencyName = resultSet.getString("agency_name");
+                String price = resultSet.getString("price");
+                String roomType = resultSet.getString("room_type");
+                String hotelName = resultSet.getString("hotel_name");
+                String checkIn = resultSet.getString("check_in");
+                String roomNights = resultSet.getString("room_nights");
+
+                // Mostrar los datos de la reserva
+                System.out.println("Datos de la reserva:");
+                System.out.println("Cliente: " + clientName);
+                System.out.println("Agencia: " + agencyName);
+                System.out.println("Precio: " + price);
+                System.out.println("Tipo de habitación: " + roomType);
+                System.out.println("Hotel: " + hotelName);
+                System.out.println("Check-in: " + checkIn);
+                System.out.println("Noches de habitación: " + roomNights);
+            } else {
+                System.out.println("No se encontró ninguna reserva con el localizador proporcionado.");
+            }
+
+            // Cerrar recursos
+            resultSet.close();
+            preparedStatement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            scanner.close();
+        }
     }
 
     // Método para consultar las reservas de una agencia por su identificador

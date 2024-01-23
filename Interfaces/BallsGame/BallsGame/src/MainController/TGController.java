@@ -1,8 +1,9 @@
+package MainController;
 import Engine.*;
 import Comunications.*;
 
 public class TGController {
-    private TGLocalController tgController;
+    private TGLocalController tgLocalController;
     private TGComunications tgComunications;
     public static void main(String[] args) throws Exception {
     
@@ -11,7 +12,7 @@ public class TGController {
     }
     
     public void init() {
-        this.tgController = new TGLocalController();
+        this.tgLocalController = new TGLocalController(this);
         this.tgComunications = new TGComunications();
     }
     
@@ -23,8 +24,7 @@ public class TGController {
     
     }
     
-    public void createAllChannels()
-    {
+    public void createAllChannels(){
     
     }
 }

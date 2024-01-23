@@ -11,7 +11,7 @@ public class Ball implements VisualObject, Runnable{
     private boolean bounceInmunity;
     private boolean alive = true;
     private TGModel model;
-    private int rad = 20;
+    private int rad = 30;
     private int mass = 10;
     
     public Ball(TGModel model, Vector<Integer> velocity, Vector<Integer> position) {
@@ -25,8 +25,8 @@ public class Ball implements VisualObject, Runnable{
         int x = ballVelocity.get(0);
         int y = ballVelocity.get(1);
 
-        float normalizedX = (float) (x / 30);
-        float normalizedY = (float) (y / 30);
+        float normalizedX = (float) (x / 25);
+        float normalizedY = (float) (y / 25);
 
         vectorFloat.add(normalizedX);
         vectorFloat.add(normalizedY);
@@ -35,15 +35,16 @@ public class Ball implements VisualObject, Runnable{
     }
     
     public void checkNextMove(){
-        this.nextPosition = new Vector<>();
-        nextPosition.add(Math.round(position.get(0) + (velocity.get(0))));
-        nextPosition.add(Math.round(position.get(1) + (velocity.get(1))));
+        this.getNextPosition();
         
         this.model.checkBallMovement(this);
     }
     
     @Override
     public void run() {
+        nextPosition.add(Math.round(position.get(0) + (velocity.get(0))));
+        nextPosition.add(Math.round(position.get(1) + (velocity.get(1))));
+        
         while (alive) {
             try {
                 sleep(20);
@@ -83,6 +84,13 @@ public class Ball implements VisualObject, Runnable{
 
     @Override
     public void kill() {
+    }
+    
+    public synchronized Vector<Integer> getNextPosition() {
+        nextPosition.set(0, Math.round(position.get(0) + (velocity.get(0))));
+        nextPosition.set(1, Math.round(position.get(1) + (velocity.get(1))));
+        
+        return nextPosition;
     }
 
     public Vector<Integer> getPosition() {
@@ -125,10 +133,6 @@ public class Ball implements VisualObject, Runnable{
         this.velocity = velocity;
     }
 
-    public Vector<Integer> getNextPosition() {
-        return nextPosition;
-    }
-
     public void setNextPosition(Vector<Integer> nextPosition) {
         this.nextPosition = nextPosition;
     }
@@ -148,6 +152,4 @@ public class Ball implements VisualObject, Runnable{
     public void setBounceInmunity(boolean bounceInmunity) {
         this.bounceInmunity = bounceInmunity;
     }
-    
-    
 }

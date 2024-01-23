@@ -1,17 +1,19 @@
 package Engine;
-
 import java.util.ArrayList;
 import java.util.Vector;
+import MainController.*;
 
 public class TGLocalController {
     private TGModel tgModel;
     private TGViewer tgViewer;
     private GameRules rules;
+    private TGController tgController;
 
-    public TGLocalController() {
+    public TGLocalController(TGController controller) {
         this.tgModel = new TGModel(this);
         this.tgViewer = new TGViewer(this);
         this.rules = new GameRules(this);
+        this.tgController = controller;
     }
 
     public synchronized void checkBallColison(Ball mainBall, ArrayList<Ball> ballsColiding) {
@@ -30,38 +32,41 @@ public class TGLocalController {
         mainBall.move();
     }
 
-    private void ballToBallBounce(Ball pelota1, Ball pelota2) {
-        Vector<Float> velocidadRelativa = new Vector<>();
-        velocidadRelativa.add(0, pelota2.getVelocity().get(0) - pelota1.getVelocity().get(0));
-        velocidadRelativa.add(1, pelota2.getVelocity().get(1) - pelota1.getVelocity().get(1));
+    private void ballToBallBounce(Ball mainBall, Ball otherBall) {
+        // Si tienen direcciones contrarias
+        if ((mainBall.getVelocity().get(0) > 0 && otherBall.getVelocity().get(0) < 0)
+                || (mainBall.getVelocity().get(0) < 0 && otherBall.getVelocity().get(0) > 0)) {
 
-        double distanciaX = pelota2.getNextPosition().get(0) - pelota1.getNextPosition().get(0);
-        double distanciaY = pelota2.getNextPosition().get(1) - pelota1.getNextPosition().get(1);
-        double distancia = Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY);
+            mainBall.getVelocity().set(0, mainBall.getVelocity().get(0) * (-1));
+            otherBall.getVelocity().set(0, otherBall.getVelocity().get(0) * (-1));
+        }
 
-        double normalX = distanciaX / distancia;
-        double normalY = distanciaY / distancia;
+        if ((mainBall.getVelocity().get(1) > 0 && otherBall.getVelocity().get(1) < 0)
+        || (mainBall.getVelocity().get(1) < 0 && otherBall.getVelocity().get(1) > 0)) {
+            
+            mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
+            otherBall.getVelocity().set(1, otherBall.getVelocity().get(1) * (-1));
+        }
+        
+        //Si las bolas tienen la misma direccion
+        if ((mainBall.getVelocity().get(0) > 0 && otherBall.getVelocity().get(0) > 0)
+                || (mainBall.getVelocity().get(0) < 0 && otherBall.getVelocity().get(0) < 0)) {
 
-        double velocidadRelativaEnNormal = velocidadRelativa.get(0) * normalX + velocidadRelativa.get(1) * normalY;
+            mainBall.getVelocity().set(0, mainBall.getVelocity().get(0) * (-1));
+        }
 
-        double cambioVelocidadPelota1X = 2 * velocidadRelativaEnNormal * normalX;
-        double cambioVelocidadPelota1Y = 2 * velocidadRelativaEnNormal * normalY;
+        if ((mainBall.getVelocity().get(1) > 0 && otherBall.getVelocity().get(1) > 0)
+                || (mainBall.getVelocity().get(1) < 0 && otherBall.getVelocity().get(1) < 0)) {
 
-        double cambioVelocidadPelota2X = velocidadRelativa.get(0) - cambioVelocidadPelota1X;
-        double cambioVelocidadPelota2Y = velocidadRelativa.get(1) - cambioVelocidadPelota1Y;
-
-        pelota1.getVelocity().set(0, (float) (pelota1.getVelocity().get(0) + cambioVelocidadPelota1X));
-        pelota1.getVelocity().set(1, (float) (pelota1.getVelocity().get(1) + cambioVelocidadPelota1Y));
-
-        pelota2.getVelocity().set(0,(float) (pelota2.getVelocity().get(0) + cambioVelocidadPelota2X));
-        pelota2.getVelocity().set(1,(float) (pelota2.getVelocity().get(1) + cambioVelocidadPelota2Y));
+            mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
+        }
     }
-
 
     private boolean borderBounce(Ball mainBall) {
         // Colision contra bordes
         Vector<Integer> canvaSize = this.getCanvasSize();
         Vector<Integer> bouncePosition = new Vector<>();
+        
         // Bordes Laterales
         if (mainBall.getNextPosition().get(0) <= 0) {
 

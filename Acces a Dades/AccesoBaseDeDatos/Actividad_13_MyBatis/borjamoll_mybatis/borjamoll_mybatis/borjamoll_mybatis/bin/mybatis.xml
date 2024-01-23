@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 3.0//EN"
+    "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+
+<configuration>
+  <environments default="local">
+    <environment id="local">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/actividad13?allowLoadLocalInfile=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+        <property name="poolPingQuery" value="select 1"/>
+        <property name="poolPingEnabled" value="true" /> 
+      </dataSource>
+    </environment> 
+  </environments>
+
+  <mappers>
+      <mapper resource="mapper.xml"/>
+  </mappers>
+</configuration>

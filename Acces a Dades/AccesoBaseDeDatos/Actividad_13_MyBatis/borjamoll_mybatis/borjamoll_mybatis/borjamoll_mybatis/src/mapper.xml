@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 3.0//EN"
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="BookingsMapper.java"> 
+
+    <insert id="carregarDadesXML" parameterType="java.util.Map">
+        INSERT INTO tu_tabla_reservas (
+            location_number, id_client, client_name, id_agency, agency_name,
+            price, room_type_id, hotel_name, check_in, room_nights
+        )
+        VALUES (
+            #{locationNumber}, #{clientId}, #{clientName}, #{agencyId}, #{agencyName},
+            #{price}, #{roomTypeId}, #{hotelName}, #{checkIn}, #{roomNights}
+        )
+    </insert>
+
+</mapper>
