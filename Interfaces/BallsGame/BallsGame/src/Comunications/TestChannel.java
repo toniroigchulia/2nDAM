@@ -14,19 +14,19 @@ public class TestChannel implements Runnable {
     @Override
     public void run() {
         while (working) {
-            System.out.println("Health Care: Checking...");
-            // Verificar si ha pasado más tiempo que timeOut desde que se recibió el último
-            // mensaje
+            System.out.println("Health Care: Comprobando...");
+            // Verificar si ha pasado más tiempo que timeOut desde que se 
+            // recibió el último mensaje
             long currentTime = System.currentTimeMillis();
             long timeLastMessage = channel.getRecievedTime();
             long diferencia = currentTime - timeLastMessage;
 
             if (diferencia > timeOut) {
 
-                System.out.println("Health Care: last recieved message was " + diferencia + " ago");
+                System.out.println("Health Care: el ultimo mensaje es de hace: " + diferencia);
                 if (channel.ping()) {
 
-                    System.out.println("Health Care: Ping sent successfully");
+                    System.out.println("Health Care: Ping mandado correctamente");
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
@@ -34,7 +34,7 @@ public class TestChannel implements Runnable {
                     }
                 } else {
 
-                    System.out.println("HealthCareConnection: Cerrando conexion.");
+                    System.out.println("Health Care: Detenido");
                     channel.killSocket();
                     try {
                         Thread.sleep(5000);
@@ -55,6 +55,7 @@ public class TestChannel implements Runnable {
         working = false;
     }
 
+    // Getters And Setters
     public long getTimeOut() {
         return timeOut;
     }

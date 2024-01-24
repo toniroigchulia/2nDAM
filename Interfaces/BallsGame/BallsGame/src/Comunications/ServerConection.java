@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerConection implements Runnable {
+public class ServerConection {
     private TGComunications tgComunications;
     private int PORT;
     private ServerSocket SOCKET;
@@ -20,8 +20,7 @@ public class ServerConection implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
+    public void createConnection() {
 
         try {
 
@@ -40,7 +39,8 @@ public class ServerConection implements Runnable {
             throw new RuntimeException(e);
         }
     }
-
+    
+    // Getters And Setters
     public boolean isSocketClosed() {
         return SOCKET.isClosed();
     }

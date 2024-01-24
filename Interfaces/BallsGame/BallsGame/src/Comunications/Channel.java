@@ -27,7 +27,6 @@ public class Channel implements Runnable {
         this.tgComunications = tgComunications;
         this.isClient = isClient;
         this.interlocutor = new Interlocutor();
-        this.testChanel = new TestChannel(this, 10000);
     }
 
     @Override
@@ -39,13 +38,13 @@ public class Channel implements Runnable {
 
                 // Leer mensajes entrantes
                 if (SOCKET != null && SOCKET.isConnected()) {
+                
                     System.out.println("Esperando un mensaje");
                     dataIn();
                     System.out.println("Ha llegado un mensaje");
                 } else {
 
                     System.out.println("Conexión perdida, intentando reconectar...");
-                    // Esperar un poco antes de verificar la conexión de nuevo
                     Thread.sleep(5000);
                 }
             } catch (InterruptedException e) {
@@ -58,30 +57,33 @@ public class Channel implements Runnable {
     public void setSocket() {
         try {
             if (isClient) {
-
+                
+                // Iniciar socket como cliente
                 this.tgComunications.setClientConection(
-                        new ClientConection(this.tgComunications, interlocutor.getPORT(), interlocutor.getIP()));
+                        new ClientConection(this.tgComunications, 1616, "localhost"));
                 this.tgComunications.getClientConection().setIntentarReconectar(true);
-                this.tgComunications.getClientConection().run();
+                this.tgComunications.getClientConection().createConnection();
                 this.SOCKET = this.tgComunications.getClientConection().getSOCKET();
                 System.out.println("Conexion establecida como cliente correctamente");
             } else {
 
-                // Iniciar el servidor
+                // Iniciar socket como servidor
                 this.tgComunications
-                        .setServerConection(new ServerConection(this.tgComunications, 1620));
-                this.tgComunications.getServerConection().run();
+                        .setServerConection(new ServerConection(this.tgComunications, 1626));
+                this.tgComunications.getServerConection().createConnection();
                 this.SOCKET = this.tgComunications.getServerConection().getCLSOCK();
                 System.out.println("Conexion establecida como servidor correctamente");
             }
-
             System.out.println(this.SOCKET);
+
             // Inicializar los objetos BufferedReader y PrintWriter
             OutputStream os = SOCKET.getOutputStream();
             this.out = new ObjectOutputStream(os);
             InputStream is = SOCKET.getInputStream();
             this.in = new ObjectInputStream(is);
-
+    
+            // Una vez se ha creado el socket creamos el test channel para asegurar que siga funcionando
+            this.testChanel = new TestChannel(this, 10000);
             new Thread(this.testChanel).start();
         } catch (IOException e) {
 
@@ -90,6 +92,7 @@ public class Channel implements Runnable {
     }
 
     public synchronized void killSocket() {
+        // Si detectamos que la conexion no funciona como queremos eliminamos el socket 
         try {
 
             stopTestChannel();
@@ -109,12 +112,22 @@ public class Channel implements Runnable {
             SOCKET = null;
             System.err.println("Matando el socket...");
         }
+        
+        // Una vez ha sido eliminado lo volvemos a crear y el nuevo se quedara esperando a que se reestablezca la connexion
+        try {
+            Thread.sleep(5000);
+            setSocket();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
     }
 
+    // Metodo para mandar informacion 
     public void sendData() {
 
     }
-
+    
+    // Metodo para recibir informacion
     public void dataIn() {
         Message m;
         try {
@@ -122,7 +135,7 @@ public class Channel implements Runnable {
             while (SOCKET != null && (m = (Message) in.readObject()) != null) {
                 if (m.isPing()) {
 
-                    System.out.println("Recibido ping");
+                    System.out.println("Ping recibido");
                     return;
                 }
 
@@ -135,22 +148,24 @@ public class Channel implements Runnable {
             killSocket();
         }
     }
-
-    public void stopTestChannel() {
-        if (testChanel != null) {
-            testChanel.pararEjecucion();
-            testChanel = null;
-        }
-    }
-
+    
+    // Metodo para hacer pings y asegurar el funcionamiento correcto del Socket
     public boolean ping() {
         try {
-            System.out.println("Entra en ping");
+            System.out.println("Manda ping");
             out.writeObject(Message.ping());
             return true;
         } catch (Exception e) {
             System.out.println("Error en el envío del heartbeat: " + e);
             return false;
+        }
+    }
+    
+    // Parar el hilo del test channel
+    public void stopTestChannel() {
+        if (testChanel != null) {
+            testChanel.pararEjecucion();
+            testChanel = null;
         }
     }
 

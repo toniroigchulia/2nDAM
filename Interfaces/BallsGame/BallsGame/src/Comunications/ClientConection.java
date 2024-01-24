@@ -2,7 +2,7 @@ package Comunications;
 
 import java.net.Socket;
 
-public class ClientConection implements Runnable {
+public class ClientConection {
     private TGComunications tgComunications;
     private int PORT;
     private String IP;
@@ -18,8 +18,7 @@ public class ClientConection implements Runnable {
         this.IP = IP;
     }
 
-    @Override
-    public void run() {
+    public void createConnection() {
         while (!conexionEstablecida) {
             if (!conexionEstablecida && intentarReconectar) {
 
@@ -43,7 +42,8 @@ public class ClientConection implements Runnable {
             }
         }
     }
-
+    
+    // Getters And Setters
     public TGComunications getTgComunications() {
         return tgComunications;
     }
