@@ -24,11 +24,12 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        "security/ir.model.access.csv",
+        "security/library_security.xml",
         "views/views.xml",
         "views/templates.xml",
         "views/library_menu.xml",
-        "security/library_security.xml",
+        "views/book_list_template.xml",
     ],
     
     'application': True,

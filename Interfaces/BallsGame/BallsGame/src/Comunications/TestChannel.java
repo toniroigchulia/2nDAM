@@ -2,9 +2,9 @@ package Comunications;
 
 public class TestChannel implements Runnable {
 
+    private boolean working = true;
     private Channel channel;
     private long timeOut;
-    private boolean working = true;
 
     public TestChannel(Channel channel, long timeOut) {
         this.channel = channel;

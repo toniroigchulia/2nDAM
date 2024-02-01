@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerConection {
+public class ServerConection implements Runnable{
     private TGComunications tgComunications;
-    private int PORT;
     private ServerSocket SOCKET;
     private Socket CLSOCK;
+    private int PORT;
 
     public ServerConection(TGComunications tgComunications, int port) {
         this.tgComunications = tgComunications;
@@ -18,6 +18,12 @@ public class ServerConection {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'run'");
     }
 
     public void createConnection() {

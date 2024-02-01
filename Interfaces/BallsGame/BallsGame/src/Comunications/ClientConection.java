@@ -2,11 +2,11 @@ package Comunications;
 
 import java.net.Socket;
 
-public class ClientConection {
+public class ClientConection implements Runnable{
     private TGComunications tgComunications;
-    private int PORT;
-    private String IP;
     private Socket SOCKET;
+    private String IP;
+    private int PORT;
 
     private boolean conexionEstablecida = false;
 
@@ -16,6 +16,13 @@ public class ClientConection {
         this.tgComunications = tgComunications;
         this.PORT = PORT;
         this.IP = IP;
+    }
+    
+    
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'run'");
     }
 
     public void createConnection() {
