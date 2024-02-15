@@ -15,6 +15,7 @@ public class Product extends Contador {
 
             decSync();
         } else {
+            
             dec();
         }
 

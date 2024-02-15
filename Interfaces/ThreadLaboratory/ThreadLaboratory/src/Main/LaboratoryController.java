@@ -16,6 +16,7 @@ public class LaboratoryController {
     public LaboratoryController() {
         this.model = new Model(new DTOLabParameters(), this);
         this.viewer = new Viewer(this);
+
         threadView = new Thread(this.viewer);
         threadView.start();
     }

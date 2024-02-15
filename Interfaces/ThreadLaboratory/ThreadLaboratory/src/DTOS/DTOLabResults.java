@@ -82,7 +82,7 @@ public class DTOLabResults {
         return quantityConsumit;
     }
 
-    public void setQuantityConsumit(int quantityConsumit) {
+    public synchronized void setQuantityConsumit(int quantityConsumit) {
         this.quantityConsumit = quantityConsumit;
     }
 
@@ -90,7 +90,7 @@ public class DTOLabResults {
         return quantityProductorProcesando;
     }
 
-    public void setQuantityProductorProcesando(int quantityProductorProcesando) {
+    public synchronized void setQuantityProductorProcesando(int quantityProductorProcesando) {
         this.quantityProductorProcesando = quantityProductorProcesando;
     }
 
@@ -98,7 +98,7 @@ public class DTOLabResults {
         return quantityProductorFinalizados;
     }
 
-    public void setQuantityProductorFinalizados(int quantityProductorFinalizados) {
+    public synchronized void setQuantityProductorFinalizados(int quantityProductorFinalizados) {
         this.quantityProductorFinalizados = quantityProductorFinalizados;
     }
 
@@ -106,7 +106,7 @@ public class DTOLabResults {
         return quantityProductorPendientes;
     }
 
-    public void setQuantityProductorPendientes(int quantityProductorPendientes) {
+    public synchronized void setQuantityProductorPendientes(int quantityProductorPendientes) {
         this.quantityProductorPendientes = quantityProductorPendientes;
     }
 
@@ -114,7 +114,7 @@ public class DTOLabResults {
         return quantityConsumidorProcesando;
     }
 
-    public void setQuantityConsumidorProcesando(int quantityConsumidorProcesando) {
+    public synchronized void setQuantityConsumidorProcesando(int quantityConsumidorProcesando) {
         this.quantityConsumidorProcesando = quantityConsumidorProcesando;
     }
 
@@ -122,7 +122,7 @@ public class DTOLabResults {
         return quantityConsumidorFinalizados;
     }
 
-    public void setQuantityConsumidorFinalizados(int quantityConsumidorFinalizados) {
+    public synchronized void setQuantityConsumidorFinalizados(int quantityConsumidorFinalizados) {
         this.quantityConsumidorFinalizados = quantityConsumidorFinalizados;
     }
 
@@ -130,7 +130,7 @@ public class DTOLabResults {
         return quantityConsumidorPendientes;
     }
 
-    public void setQuantityConsumidorPendientes(int quantityConsumidorPendientes) {
+    public synchronized void setQuantityConsumidorPendientes(int quantityConsumidorPendientes) {
         this.quantityConsumidorPendientes = quantityConsumidorPendientes;
     }
 }

@@ -24,6 +24,9 @@ public class Productor implements Runnable {
     }
 
     public void run() {
+        this.model.getResults().setQuantityProductorProcesando(this.model.getResults().getQuantityProductorProcesando() + 1);
         this.producir();
+        this.model.getResults().setQuantityProductorFinalizados(this.model.getResults().getQuantityProductorFinalizados() + 1);
+        this.model.getResults().setQuantityProductorProcesando(this.model.getResults().getQuantityProductorProcesando() - 1);
     }
 }
