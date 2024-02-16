@@ -1,41 +1,33 @@
 package Comunications;
-
 import java.net.Socket;
 
-public class ClientConection implements Runnable{
+public class ClientConection implements Runnable {
     private TGComunications tgComunications;
     private Socket SOCKET;
-    private String IP;
-    private int PORT;
 
-    private boolean conexionEstablecida = false;
-
-    private volatile boolean intentarReconectar = true;
-
-    public ClientConection(TGComunications tgComunications, int PORT, String IP) {
+    public ClientConection(TGComunications tgComunications) {
         this.tgComunications = tgComunications;
-        this.PORT = PORT;
-        this.IP = IP;
     }
-    
-    
+
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'run'");
+        while (true) {
+            this.SOCKET = new Socket();
+            createConnection();
+        }
     }
 
     public void createConnection() {
-        while (!conexionEstablecida) {
-            if (!conexionEstablecida && intentarReconectar) {
-
+        if (this.tgComunications.getDownChannels() != null) {
+            for (int i = 0; i < this.tgComunications.getDownChannels().size(); i++) {
                 try {
 
                     System.out.println("Conectando como cliente...");
-                    this.SOCKET = new Socket(this.IP, this.PORT);
+                    this.SOCKET = new Socket(this.tgComunications.getDownChannels().get(i).getInterlocutor().getIP(), 10000);
+                    this.tgComunications.getDownChannels().get(i).setSOCKET(this.SOCKET);
+                    this.tgComunications.getChannels().add(this.tgComunications.getDownChannels().get(i));
+                    this.tgComunications.getDownChannels().remove(i);
 
-                    conexionEstablecida = true;
-                    
                 } catch (Exception e) {
 
                     System.out.println("Esperando conexión...");
@@ -49,7 +41,7 @@ public class ClientConection implements Runnable{
             }
         }
     }
-    
+
     // Getters And Setters
     public TGComunications getTgComunications() {
         return tgComunications;
@@ -57,38 +49,6 @@ public class ClientConection implements Runnable{
 
     public void setTgComunications(TGComunications tgComunications) {
         this.tgComunications = tgComunications;
-    }
-
-    public boolean isConexionEstablecida() {
-        return conexionEstablecida;
-    }
-
-    public void setConexionEstablecida(boolean conexionEstablecida) {
-        this.conexionEstablecida = conexionEstablecida;
-    }
-
-    public boolean isIntentarReconectar() {
-        return intentarReconectar;
-    }
-
-    public void setIntentarReconectar(boolean intentarReconectar) {
-        this.intentarReconectar = intentarReconectar;
-    }
-
-    public int getPORT() {
-        return PORT;
-    }
-
-    public void setPORT(int pORT) {
-        PORT = pORT;
-    }
-
-    public String getIP() {
-        return IP;
-    }
-
-    public void setIP(String iP) {
-        IP = iP;
     }
 
     public Socket getSOCKET() {

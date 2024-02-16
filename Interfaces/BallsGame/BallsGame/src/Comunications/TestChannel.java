@@ -35,13 +35,7 @@ public class TestChannel implements Runnable {
                 } else {
 
                     System.out.println("Health Care: Detenido");
-                    channel.killSocket();
-                    try {
-                        Thread.sleep(5000);
-                        channel.setSocket();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    channel.setDownChannel();
                     working = false;
                 }
             }

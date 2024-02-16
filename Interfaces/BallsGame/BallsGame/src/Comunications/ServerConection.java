@@ -1,6 +1,4 @@
 package Comunications;
-
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -13,36 +11,30 @@ public class ServerConection implements Runnable{
     public ServerConection(TGComunications tgComunications, int port) {
         this.tgComunications = tgComunications;
         this.PORT = port;
-        try {
-            this.SOCKET = new ServerSocket(this.PORT);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+
     }
     
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'run'");
+        while (true) {
+            try {
+                this.SOCKET = new ServerSocket(this.PORT);
+                createConnection();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
     }
-
+    
     public void createConnection() {
-
         try {
-
+            
             System.out.println("Conectando como servidor...");
             this.CLSOCK = SOCKET.accept();
+            new Thread(new PeerIDIdentificator(this, this.CLSOCK)).start();
         } catch (Exception e) {
 
             System.out.println("ServerConnector error: " + e);
-        }
-    }
-
-    public void killSocket() {
-        try {
-            SOCKET.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
     
