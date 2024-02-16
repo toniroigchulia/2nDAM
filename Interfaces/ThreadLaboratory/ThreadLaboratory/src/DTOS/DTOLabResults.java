@@ -86,7 +86,7 @@ public class DTOLabResults {
         this.quantityConsumit = quantityConsumit;
     }
 
-    public int getQuantityProductorProcesando() {
+    public synchronized int getQuantityProductorProcesando() {
         return quantityProductorProcesando;
     }
 
@@ -94,7 +94,7 @@ public class DTOLabResults {
         this.quantityProductorProcesando = quantityProductorProcesando;
     }
 
-    public int getQuantityProductorFinalizados() {
+    public synchronized int getQuantityProductorFinalizados() {
         return quantityProductorFinalizados;
     }
 
@@ -102,7 +102,7 @@ public class DTOLabResults {
         this.quantityProductorFinalizados = quantityProductorFinalizados;
     }
 
-    public int getQuantityProductorPendientes() {
+    public synchronized int getQuantityProductorPendientes() {
         return quantityProductorPendientes;
     }
 
@@ -110,7 +110,7 @@ public class DTOLabResults {
         this.quantityProductorPendientes = quantityProductorPendientes;
     }
 
-    public int getQuantityConsumidorProcesando() {
+    public synchronized int getQuantityConsumidorProcesando() {
         return quantityConsumidorProcesando;
     }
 
@@ -118,7 +118,7 @@ public class DTOLabResults {
         this.quantityConsumidorProcesando = quantityConsumidorProcesando;
     }
 
-    public int getQuantityConsumidorFinalizados() {
+    public synchronized int getQuantityConsumidorFinalizados() {
         return quantityConsumidorFinalizados;
     }
 
@@ -126,7 +126,7 @@ public class DTOLabResults {
         this.quantityConsumidorFinalizados = quantityConsumidorFinalizados;
     }
 
-    public int getQuantityConsumidorPendientes() {
+    public synchronized int getQuantityConsumidorPendientes() {
         return quantityConsumidorPendientes;
     }
 

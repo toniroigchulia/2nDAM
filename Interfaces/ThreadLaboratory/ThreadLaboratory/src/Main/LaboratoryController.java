@@ -29,6 +29,11 @@ public class LaboratoryController {
         return this.model.getResults();
     }
 
+    public void resetResult(){
+        this.model.setResults(new DTOLabResults());
+        this.model.getProduc().setValue(0);
+    }
+
     public void applyConfig(DTOLabParameters config){
         this.model.setConfig(config);
     }

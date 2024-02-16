@@ -19,6 +19,7 @@ public class Productor implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            this.model.getResults().setQuantityProduit(this.model.getResults().getQuantityProduit() + 1);
             this.model.getProduc().produce();
         }
     }
@@ -28,5 +29,7 @@ public class Productor implements Runnable {
         this.producir();
         this.model.getResults().setQuantityProductorFinalizados(this.model.getResults().getQuantityProductorFinalizados() + 1);
         this.model.getResults().setQuantityProductorProcesando(this.model.getResults().getQuantityProductorProcesando() - 1);
+        this.model.getResults().setQuantityProductorPendientes(this.model.getResults().getQuantityProductorPendientes() - 1);
+        this.model.getResults().setMsProcesoProductor(((this.model.getTiempIniProProd() - System.currentTimeMillis()) / -1000)+"");
     }
 }

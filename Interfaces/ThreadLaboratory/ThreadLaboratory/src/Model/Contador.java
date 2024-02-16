@@ -14,11 +14,11 @@ public class Contador {
 
             if (value < 100) {
 
-                this.value = +1;
+                this.value = this.value + 1;
             }
         } else {
 
-            this.value = +1;
+            this.value = this.value + 1;
         }
     }
 
@@ -27,11 +27,11 @@ public class Contador {
 
             if (value > 0) {
 
-                this.value = -1;
+                this.value = this.value - 1;
             }
         } else {
 
-            this.value = -1;
+            this.value = this.value - 1;
         }
     }
 
@@ -40,7 +40,7 @@ public class Contador {
 
             if (value < 100) {
 
-                this.value = +1;
+                this.value = this.value + 1;
             } else {
                 try {
 
@@ -51,7 +51,7 @@ public class Contador {
             }
         } else {
 
-            this.value = +1;
+            this.value = this.value + 1;
         }
 
         notifyAll();
@@ -62,7 +62,7 @@ public class Contador {
 
             if (value > 0) {
 
-                this.value = -1;
+                this.value = this.value - 1;
             } else {
                 try {
 
@@ -73,7 +73,7 @@ public class Contador {
             }
         } else {
 
-            this.value = -1;
+            this.value = this.value - 1;
         }
 
         notifyAll();
@@ -89,5 +89,9 @@ public class Contador {
 
     public void setStockPositivo(boolean isStockPositivo) {
         this.stockPositivo = isStockPositivo;
+    }
+
+    public void setValue(int v){
+        this.value = v;
     }
 }

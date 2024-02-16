@@ -16,8 +16,8 @@ public class DTOLabParameters {
     private boolean playing;
 
     public DTOLabParameters(){
-        this.productores = 200;
-        this.quantityItemsP = 100;
+        this.productores = 300;
+        this.quantityItemsP = 200;
         this.tempsMaximCheckBoxC = false;
         this.tempsMaximP = 100;
         this.consumidores = 400;

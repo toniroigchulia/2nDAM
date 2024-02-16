@@ -90,13 +90,11 @@ public class Viewer extends JFrame implements Runnable {
                     controller.modelStart();
 
                     controller.applyConfig(labParameters);
-                    //System.out.println("Play");
                     break;
                 case "Pause":
                     labParameters.setPlaying(false);
 
                     controller.applyConfig(labParameters);
-                    //System.out.println("Pause");
                     break;
                 case "Aplicar":
                     labParameters.setProductores(Integer.parseInt(getParameterPanel().getTextProductors().getText()));
@@ -124,14 +122,12 @@ public class Viewer extends JFrame implements Runnable {
                     labParameters.setStockPositivo(getControlPanel().getStockPositive().isSelected());
 
                     controller.applyConfig(labParameters);
-                    // System.out.println("Aplicar");
                     break;
                 case "Reiniciar":
-
+                    controller.resetResult();
                     getParameterPanel().setLabParameters(new DTOLabParameters());
                     getParameterPanel().setDefaultFieldsValues();
                     controller.applyConfig(labParameters);
-                    // System.out.println("Reiniciar");
                     break;
                 default:
                     System.err.println("Acción NO tratada: " + e);

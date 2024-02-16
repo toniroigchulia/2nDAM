@@ -92,7 +92,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         crearThreads = new JLabel();
-        crearThreads.setText("Tiempo Crear Threads");
+        crearThreads.setText("Tiempo Crear Threads Ms");
         this.add(crearThreads, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -104,7 +104,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         startThreads = new JLabel();
-        startThreads.setText("Tiempo Start Threads");
+        startThreads.setText("Tiempo Start Threads Ms");
         this.add(startThreads, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -116,7 +116,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         procesConsumidors = new JLabel();
-        procesConsumidors.setText("Temps Proces Consumidors");
+        procesConsumidors.setText("Temps Proces Consumidors S");
         this.add(procesConsumidors, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -128,7 +128,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         procesProductors = new JLabel();
-        procesProductors.setText("Temps Proces Productors");
+        procesProductors.setText("Temps Proces Productors S");
         this.add(procesProductors, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -140,7 +140,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         itemsProduitsProductos = new JLabel();
-        itemsProduitsProductos.setText("Items per Productor");
+        itemsProduitsProductos.setText("Items Produits");
         this.add(itemsProduitsProductos, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -152,7 +152,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         itemsConsumitConsumidor = new JLabel();
-        itemsConsumitConsumidor.setText("Items per Consumidor");
+        itemsConsumitConsumidor.setText("Items Consumits");
         this.add(itemsConsumitConsumidor, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -246,7 +246,6 @@ public class ResultatPanel extends JPanel implements Runnable {
     public void run() {
         try {
             while (true) {
-                System.out.println(this.labResults.getProductosActuales()+"");
                 this.textContador.setText(this.labResults.getProductosActuales()+"");
                 this.textCrearThreads.setText(this.labResults.getMsCrearThread());
                 this.textStartThreads.setText(this.labResults.getMsArrancarThread());

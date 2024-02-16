@@ -41,4 +41,8 @@ public class Product extends Contador {
     public void setStockPositivo(boolean isStockPositivo){
         super.setStockPositivo(isStockPositivo);
     }
+
+    public void setValue(int v){
+        super.setValue(v);
+    }
 }
