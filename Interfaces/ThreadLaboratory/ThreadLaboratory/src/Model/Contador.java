@@ -2,17 +2,17 @@ package Model;
 
 public class Contador {
     private int value;
-    private boolean stockPositivo;
+    private Model model;
 
-    public Contador(int v, boolean stockPositivo) {
+    public Contador(int v, Model model) {
         this.value = v;
-        this.stockPositivo = stockPositivo;
+        this.model = model;
     }
 
     public void inc() {
-        if (stockPositivo) {
+        if (this.model.getConfig().isStockPositivo()) {
 
-            if (value < 100) {
+            if (value < 10000) {
 
                 this.value = this.value + 1;
             }
@@ -23,7 +23,7 @@ public class Contador {
     }
 
     public void dec() {
-        if (stockPositivo) {
+        if (this.model.getConfig().isStockPositivo()) {
 
             if (value > 0) {
 
@@ -36,9 +36,9 @@ public class Contador {
     }
 
     public synchronized void incSync() {
-        if (stockPositivo) {
+        if (this.model.getConfig().isStockPositivo()) {
 
-            if (value < 100) {
+            if (value < 10000) {
 
                 this.value = this.value + 1;
             } else {
@@ -58,7 +58,7 @@ public class Contador {
     }
 
     public synchronized void decSync() {
-        if (stockPositivo) {
+        if (this.model.getConfig().isStockPositivo()) {
 
             if (value > 0) {
 
@@ -87,11 +87,7 @@ public class Contador {
         return this.value;
     }
 
-    public void setStockPositivo(boolean isStockPositivo) {
-        this.stockPositivo = isStockPositivo;
-    }
-
-    public void setValue(int v){
+    public void setValue(int v) {
         this.value = v;
     }
 }

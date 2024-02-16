@@ -1,4 +1,5 @@
 package DTOS;
+
 public class DTOLabParameters {
     private int productores;
     private int quantityItemsP;
@@ -15,7 +16,7 @@ public class DTOLabParameters {
 
     private boolean playing;
 
-    public DTOLabParameters(){
+    public DTOLabParameters() {
         this.productores = 300;
         this.quantityItemsP = 200;
         this.tempsMaximCheckBoxC = false;

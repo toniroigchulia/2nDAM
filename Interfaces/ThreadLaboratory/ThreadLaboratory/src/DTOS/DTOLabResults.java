@@ -1,4 +1,5 @@
 package DTOS;
+
 public class DTOLabResults {
     private String msCrearThread;
     private String msArrancarThread;
@@ -13,7 +14,7 @@ public class DTOLabResults {
     private int quantityConsumidorProcesando;
     private int quantityConsumidorFinalizados;
     private int quantityConsumidorPendientes;
-    
+
     public DTOLabResults() {
         this.msCrearThread = "0";
         this.msArrancarThread = "0";

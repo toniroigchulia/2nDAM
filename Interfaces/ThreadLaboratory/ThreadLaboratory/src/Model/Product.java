@@ -2,20 +2,18 @@ package Model;
 
 public class Product extends Contador {
     private Model model;
-    private boolean protegerRegCritic;
 
-    public Product(int v,boolean stockPositivo, Model model,  boolean protegerRegCritic) {
-        super(v, stockPositivo);
-        this.protegerRegCritic = protegerRegCritic;
+    public Product(int v, boolean stockPositivo, Model model) {
+        super(v, model);
         this.model = model;
     }
 
     public void consume() {
-        if (this.protegerRegCritic) {
+        if (this.model.getConfig().isProtegerRegCritic()) {
 
             decSync();
         } else {
-            
+
             dec();
         }
 
@@ -23,7 +21,7 @@ public class Product extends Contador {
     }
 
     public void produce() {
-        if (this.protegerRegCritic) {
+        if (this.model.getConfig().isProtegerRegCritic()) {
 
             incSync();
         } else {
@@ -34,15 +32,7 @@ public class Product extends Contador {
         this.model.getResults().setProductosActuales(getValueSync());
     }
 
-    public void setProtegRegCrit(boolean isProtected) {
-        this.protegerRegCritic = isProtected;
-    }
-
-    public void setStockPositivo(boolean isStockPositivo){
-        super.setStockPositivo(isStockPositivo);
-    }
-
-    public void setValue(int v){
+    public void setValue(int v) {
         super.setValue(v);
     }
 }

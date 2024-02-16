@@ -1,4 +1,5 @@
 package Main;
+
 import DTOS.DTOLabParameters;
 import DTOS.DTOLabResults;
 import Model.Model;
@@ -8,8 +9,9 @@ public class LaboratoryController {
     Viewer viewer;
     Thread threadView;
     Model model;
+
     public static void main(String[] args) throws Exception {
-        LaboratoryController lc = new LaboratoryController();
+        new LaboratoryController();
     }
 
     // METODOS CONSTRUCTORES
@@ -21,20 +23,20 @@ public class LaboratoryController {
         threadView.start();
     }
 
-    public void modelStart(){
+    public void modelStart() {
         this.model.start();
     }
 
-    public DTOLabResults getResults(){
+    public DTOLabResults getResults() {
         return this.model.getResults();
     }
 
-    public void resetResult(){
+    public void resetResult() {
         this.model.setResults(new DTOLabResults());
         this.model.getProduc().setValue(0);
     }
 
-    public void applyConfig(DTOLabParameters config){
+    public void applyConfig(DTOLabParameters config) {
         this.model.setConfig(config);
     }
 

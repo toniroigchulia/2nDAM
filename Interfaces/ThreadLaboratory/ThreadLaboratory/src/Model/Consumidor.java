@@ -1,4 +1,5 @@
 package Model;
+
 import java.util.Random;
 
 public class Consumidor implements Runnable {
@@ -12,8 +13,8 @@ public class Consumidor implements Runnable {
     public void consumir() {
         for (int i = 0; i < this.model.getConfig().getQuantityItemsC(); i++) {
             try {
-                if (!this.model.getConfig().isTempsMaximCheckBoxC()){
-                    
+                if (!this.model.getConfig().isTempsMaximCheckBoxC()) {
+
                     Thread.sleep(random.nextInt(this.model.getConfig().getTempsMaximC()));
                 }
             } catch (InterruptedException e) {
@@ -23,13 +24,18 @@ public class Consumidor implements Runnable {
             this.model.getProduc().consume();
         }
     }
-    
+
     public void run() {
-        this.model.getResults().setQuantityConsumidorProcesando(this.model.getResults().getQuantityConsumidorProcesando() + 1);
+        this.model.getResults()
+                .setQuantityConsumidorProcesando(this.model.getResults().getQuantityConsumidorProcesando() + 1);
         this.consumir();
-        this.model.getResults().setQuantityConsumidorFinalizados(this.model.getResults().getQuantityConsumidorFinalizados() + 1);
-        this.model.getResults().setQuantityConsumidorProcesando(this.model.getResults().getQuantityConsumidorProcesando() - 1);
-        this.model.getResults().setQuantityConsumidorPendientes(this.model.getResults().getQuantityConsumidorPendientes() - 1);
-        this.model.getResults().setMsProcesoConsumidor(((this.model.getTiempIniProCons() - System.currentTimeMillis()) / -1000)+"");
+        this.model.getResults()
+                .setQuantityConsumidorFinalizados(this.model.getResults().getQuantityConsumidorFinalizados() + 1);
+        this.model.getResults()
+                .setQuantityConsumidorProcesando(this.model.getResults().getQuantityConsumidorProcesando() - 1);
+        this.model.getResults()
+                .setQuantityConsumidorPendientes(this.model.getResults().getQuantityConsumidorPendientes() - 1);
+        this.model.getResults()
+                .setMsProcesoConsumidor(((this.model.getTiempIniProCons() - System.currentTimeMillis()) / -1000) + "");
     }
 }

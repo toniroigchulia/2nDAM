@@ -1,4 +1,5 @@
 package Visual;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,8 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-public class ControlPanel extends JPanel{
-    
+public class ControlPanel extends JPanel {
+
     private ActionListener actionListener;
     private JButton play;
     private JButton pause;

@@ -1,4 +1,5 @@
 package Model;
+
 import DTOS.DTOLabParameters;
 import DTOS.DTOLabResults;
 import Main.LaboratoryController;
@@ -15,11 +16,11 @@ public class Model {
         this.laboratoryController = laboratoryController;
         this.config = config;
         this.results = new DTOLabResults();
-        this.produc = new Product(0, config.isStockPositivo(), this, config.isProtegerRegCritic());
+        this.produc = new Product(0, config.isStockPositivo(), this);
     }
 
     public void start() {
-        // Bucles parac crear los hilos         
+        // Bucles parac crear los hilos
         long tiempoCrearThreads = System.currentTimeMillis();
 
         Thread[] hilosProductor = new Thread[config.getProductores()];
@@ -27,27 +28,26 @@ public class Model {
 
         // Productoes
         for (int i = 0; i < config.getProductores(); i++) {
-            
+
             hilosProductor[i] = (new Thread(new Productor(this)));
             results.setQuantityProductorPendientes(results.getQuantityProductorPendientes() + 1);
         }
         // Consumidores
         for (int i = 0; i < config.getConsumidores(); i++) {
-            
+
             hilosConsumidor[i] = (new Thread(new Consumidor(this)));
             results.setQuantityConsumidorPendientes(results.getQuantityConsumidorPendientes() + 1);
         }
-        this.results.setMsCrearThread((System.currentTimeMillis() - tiempoCrearThreads)+"");
-
+        this.results.setMsCrearThread((System.currentTimeMillis() - tiempoCrearThreads) + "");
 
         // Bucles para iniciar los hilos
         long tiempoEmpezarThreads = System.currentTimeMillis();
 
         // Productores
         for (int i = 0; i < config.getProductores(); i++) {
-            
+
             hilosProductor[i].start();
-            if (this.tiempIniProProd == 0){
+            if (this.tiempIniProProd == 0) {
                 this.tiempIniProProd = System.currentTimeMillis();
             }
         }
@@ -55,11 +55,11 @@ public class Model {
         for (int i = 0; i < config.getConsumidores(); i++) {
 
             hilosConsumidor[i].start();
-            if (this.tiempIniProCons == 0){
+            if (this.tiempIniProCons == 0) {
                 this.tiempIniProCons = System.currentTimeMillis();
             }
         }
-        this.results.setMsArrancarThread((System.currentTimeMillis() - tiempoEmpezarThreads)+"");
+        this.results.setMsArrancarThread((System.currentTimeMillis() - tiempoEmpezarThreads) + "");
     }
 
     public DTOLabParameters getConfig() {

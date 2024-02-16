@@ -1,4 +1,5 @@
 package Visual;
+
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -118,7 +119,7 @@ public class Viewer extends JFrame implements Runnable {
                             Integer.parseInt(getParameterPanel().getTextTempsMaximConsumir().getText()));
 
                     labParameters.setProtegerRegCritic(getControlPanel().getProtRegCrit().isSelected());
-                    
+
                     labParameters.setStockPositivo(getControlPanel().getStockPositive().isSelected());
 
                     controller.applyConfig(labParameters);

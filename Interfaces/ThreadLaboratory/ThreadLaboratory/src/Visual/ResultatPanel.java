@@ -1,4 +1,5 @@
 package Visual;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -9,7 +10,7 @@ import DTOS.*;
 
 public class ResultatPanel extends JPanel implements Runnable {
 
-    //DTOLabResults
+    // DTOLabResults
     private DTOLabResults labResults;
 
     // Contador productes totals
@@ -80,7 +81,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         // Contador productes totals
         c.insets = new Insets(10, 10, 1, 10);
         contador = new JLabel();
-        contador.setText("Contador");
+        contador.setText("Productes");
         this.add(contador, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -92,7 +93,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         crearThreads = new JLabel();
-        crearThreads.setText("Tiempo Crear Threads Ms");
+        crearThreads.setText("Temps Crear Threads [ms]");
         this.add(crearThreads, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -104,7 +105,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         startThreads = new JLabel();
-        startThreads.setText("Tiempo Start Threads Ms");
+        startThreads.setText("Temps Start Threads [ms]");
         this.add(startThreads, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -116,7 +117,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         procesConsumidors = new JLabel();
-        procesConsumidors.setText("Temps Proces Consumidors S");
+        procesConsumidors.setText("Temps Proces Consumidors [s]");
         this.add(procesConsumidors, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -128,7 +129,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         c.insets = new Insets(10, 10, 1, 10);
         c.gridy++;
         procesProductors = new JLabel();
-        procesProductors.setText("Temps Proces Productors S");
+        procesProductors.setText("Temps Proces Productors [s]");
         this.add(procesProductors, c);
         c.insets = new Insets(1, 10, 1, 10);
         c.gridy++;
@@ -233,7 +234,7 @@ public class ResultatPanel extends JPanel implements Runnable {
         textFilsConsumidorsPendents.setText("0");
         this.add(textFilsConsumidorsPendents, c);
     }
-    
+
     public DTOLabResults getLabResults() {
         return labResults;
     }
@@ -246,19 +247,19 @@ public class ResultatPanel extends JPanel implements Runnable {
     public void run() {
         try {
             while (true) {
-                this.textContador.setText(this.labResults.getProductosActuales()+"");
+                this.textContador.setText(this.labResults.getProductosActuales() + "");
                 this.textCrearThreads.setText(this.labResults.getMsCrearThread());
                 this.textStartThreads.setText(this.labResults.getMsArrancarThread());
                 this.textProcesConsumidors.setText(this.labResults.getMsProcesoConsumidor());
                 this.textProcesProductors.setText(this.labResults.getMsProcesoProductor());
-                this.textItemsProduitProductor.setText(this.labResults.getQuantityProduit()+"");
-                this.textItemConsumitConsumidor.setText(this.labResults.getQuantityConsumit()+"");
-                this.textFilsProductorsProcesant.setText(this.labResults.getQuantityProductorProcesando()+"");
-                this.textFilsAcabatsProductors.setText(this.labResults.getQuantityProductorFinalizados()+"");
-                this.textFilsProductorsPendents.setText(this.labResults.getQuantityProductorPendientes()+"");
-                this.textFilsConsumidorsConsumint.setText(this.labResults.getQuantityConsumidorProcesando()+"");
-                this.textFilsConsumidorsFinalitzats.setText(this.labResults.getQuantityConsumidorFinalizados()+"");
-                this.textFilsConsumidorsPendents.setText(this.labResults.getQuantityConsumidorPendientes()+"");
+                this.textItemsProduitProductor.setText(this.labResults.getQuantityProduit() + "");
+                this.textItemConsumitConsumidor.setText(this.labResults.getQuantityConsumit() + "");
+                this.textFilsProductorsProcesant.setText(this.labResults.getQuantityProductorProcesando() + "");
+                this.textFilsAcabatsProductors.setText(this.labResults.getQuantityProductorFinalizados() + "");
+                this.textFilsProductorsPendents.setText(this.labResults.getQuantityProductorPendientes() + "");
+                this.textFilsConsumidorsConsumint.setText(this.labResults.getQuantityConsumidorProcesando() + "");
+                this.textFilsConsumidorsFinalitzats.setText(this.labResults.getQuantityConsumidorFinalizados() + "");
+                this.textFilsConsumidorsPendents.setText(this.labResults.getQuantityConsumidorPendientes() + "");
                 Thread.sleep(50);
             }
         } catch (Exception e) {

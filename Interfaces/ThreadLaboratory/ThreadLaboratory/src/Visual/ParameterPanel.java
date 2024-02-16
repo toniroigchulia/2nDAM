@@ -1,4 +1,5 @@
 package Visual;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -124,16 +125,16 @@ public class ParameterPanel extends JPanel {
         this.add(textTempsMaximConsumir, c);
     }
 
-    public void setDefaultFieldsValues(){
-        textProductors.setText(labParameters.getProductores()+"");
-        textQuanItemProductor.setText(labParameters.getQuantityItemsP()+"");
+    public void setDefaultFieldsValues() {
+        textProductors.setText(labParameters.getProductores() + "");
+        textQuanItemProductor.setText(labParameters.getQuantityItemsP() + "");
         tempsProduccio.setSelected(labParameters.isTempsMaximCheckBoxP());
-        textTempsMaximProduccio.setText(labParameters.getTempsMaximP()+"");
+        textTempsMaximProduccio.setText(labParameters.getTempsMaximP() + "");
 
-        textConsumidors.setText(labParameters.getConsumidores()+"");
-        textQuantItemConsumidor.setText(labParameters.getQuantityItemsC()+"");
+        textConsumidors.setText(labParameters.getConsumidores() + "");
+        textQuantItemConsumidor.setText(labParameters.getQuantityItemsC() + "");
         tempsConsumir.setSelected(labParameters.isTempsMaximCheckBoxC());
-        textTempsMaximConsumir.setText(labParameters.getTempsMaximC()+"");
+        textTempsMaximConsumir.setText(labParameters.getTempsMaximC() + "");
     }
 
     public DTOLabParameters getLabParameters() {
