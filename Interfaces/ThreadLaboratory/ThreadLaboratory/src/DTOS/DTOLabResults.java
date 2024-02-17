@@ -71,7 +71,7 @@ public class DTOLabResults {
         this.productosActuales = productosActuales;
     }
 
-    public int getQuantityProduit() {
+    public synchronized int getQuantityProduit() {
         return quantityProduit;
     }
 
@@ -79,7 +79,7 @@ public class DTOLabResults {
         this.quantityProduit = quantityProduit;
     }
 
-    public int getQuantityConsumit() {
+    public synchronized int getQuantityConsumit() {
         return quantityConsumit;
     }
 

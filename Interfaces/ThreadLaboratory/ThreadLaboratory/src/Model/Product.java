@@ -12,24 +12,25 @@ public class Product extends Contador {
         if (this.model.getConfig().isProtegerRegCritic()) {
 
             decSync();
+            this.model.getResults().setProductosActuales(getValueSync());
         } else {
 
             dec();
+            this.model.getResults().setProductosActuales(getValue());
         }
 
-        this.model.getResults().setProductosActuales(getValueSync());
     }
 
     public void produce() {
         if (this.model.getConfig().isProtegerRegCritic()) {
 
             incSync();
+            this.model.getResults().setProductosActuales(getValueSync());
         } else {
 
             inc();
+            this.model.getResults().setProductosActuales(getValue());
         }
-
-        this.model.getResults().setProductosActuales(getValueSync());
     }
 
     public void setValue(int v) {
