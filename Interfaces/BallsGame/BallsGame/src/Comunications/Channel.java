@@ -22,28 +22,26 @@ public class Channel implements Runnable {
     private Interlocutor interlocutor;
     private boolean isClient;
 
-    public Channel(TGComunications tgComunications, boolean isClient) {
+    public Channel(TGComunications tgComunications, Interlocutor interlocutor) {
 
         this.tgComunications = tgComunications;
-        this.isClient = isClient;
-        this.interlocutor = new Interlocutor();
+        this.interlocutor = interlocutor;
     }
 
     @Override
     public void run() {
-        setSocket();
         while (true) {
 
             try {
-
                 // Leer mensajes entrantes
                 if (SOCKET != null && SOCKET.isConnected()) {
                 
                     System.out.println("Esperando un mensaje");
-                    dataIn();
+                    this.dataIn();
                     System.out.println("Ha llegado un mensaje");
                 } else {
-
+                
+                    this.setDownChannel();
                     System.out.println("Conexión perdida, intentando reconectar...");
                     Thread.sleep(5000);
                 }
@@ -54,28 +52,9 @@ public class Channel implements Runnable {
         }
     }
 
-    public void setSocket() {
+    public void setSocket(Socket SOCKET) {
         try {
-            if (isClient) {
-                
-                // Iniciar socket como cliente
-                this.tgComunications.setClientConection(
-                        new ClientConection(this.tgComunications, 1616, "localhost"));
-                this.tgComunications.getClientConection().setIntentarReconectar(true);
-                this.tgComunications.getClientConection().createConnection();
-                this.SOCKET = this.tgComunications.getClientConection().getSOCKET();
-                System.out.println("Conexion establecida como cliente correctamente");
-            } else {
-
-                // Iniciar socket como servidor
-                this.tgComunications
-                        .setServerConection(new ServerConection(this.tgComunications, 1626));
-                this.tgComunications.getServerConection().createConnection();
-                this.SOCKET = this.tgComunications.getServerConection().getCLSOCK();
-                System.out.println("Conexion establecida como servidor correctamente");
-            }
-            System.out.println(this.SOCKET);
-
+            this.SOCKET = SOCKET;
             // Inicializar los objetos BufferedReader y PrintWriter
             OutputStream os = SOCKET.getOutputStream();
             this.out = new ObjectOutputStream(os);
@@ -91,19 +70,15 @@ public class Channel implements Runnable {
         }
     }
 
-    public synchronized void killSocket() {
+    public synchronized void setDownChannel() {
         // Si detectamos que la conexion no funciona como queremos eliminamos el socket 
         try {
 
             stopTestChannel();
             in.close();
             out.close();
-            if (this.tgComunications.getServerConection() != null) {
-                SOCKET.close();
-                if (!this.tgComunications.getServerConection().isSocketClosed()) {
-                    this.tgComunications.getServerConection().killSocket();
-                }
-            }
+            SOCKET.close();
+
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -111,14 +86,6 @@ public class Channel implements Runnable {
 
             SOCKET = null;
             System.err.println("Matando el socket...");
-        }
-        
-        // Una vez ha sido eliminado lo volvemos a crear y el nuevo se quedara esperando a que se reestablezca la connexion
-        try {
-            Thread.sleep(5000);
-            setSocket();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
         }
     }
 
@@ -145,7 +112,7 @@ public class Channel implements Runnable {
         } catch (Exception e) {
 
             System.err.println("Error en la conexion");
-            killSocket();
+            this.setDownChannel();
         }
     }
     
