@@ -15,7 +15,7 @@ public class TGController {
     
     public void init() {
         this.peerInterlocutors.add(new Interlocutor("localhost"));
-        this.peerInterlocutors.add(new Interlocutor("localhost"));
+        //this.peerInterlocutors.add(new Interlocutor("localhost"));
         this.tgLocalController = new TGLocalController(this);
         this.tgComunications = new TGComunications(this);
     }

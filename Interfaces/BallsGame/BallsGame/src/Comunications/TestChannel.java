@@ -14,7 +14,7 @@ public class TestChannel implements Runnable {
     @Override
     public void run() {
         while (working) {
-            System.out.println("Health Care: Comprobando...");
+            System.out.println("\n"+"Health Care: Comprobando..."+"\n");
             // Verificar si ha pasado más tiempo que timeOut desde que se 
             // recibió el último mensaje
             long currentTime = System.currentTimeMillis();
@@ -26,7 +26,7 @@ public class TestChannel implements Runnable {
                 System.out.println("Health Care: el ultimo mensaje es de hace: " + diferencia);
                 if (true) {
 
-                    System.out.println("Health Care: Ping mandado correctamente");
+                    //System.out.println("Health Care: Ping mandado correctamente");
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {

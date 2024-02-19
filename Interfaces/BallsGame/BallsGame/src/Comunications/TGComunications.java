@@ -16,7 +16,7 @@ public class TGComunications {
     public TGComunications(TGController tgController) {
         this.tgController = tgController;
         this.clientConection = new ClientConection(this);
-        this.serverConection = new ServerConection(this, 4040);
+        this.serverConection = new ServerConection(this);
         
         new Thread(this.clientConection).start();
         new Thread(this.serverConection).start();

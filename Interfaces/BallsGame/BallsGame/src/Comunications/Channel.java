@@ -36,13 +36,13 @@ public class Channel implements Runnable {
                 // Leer mensajes entrantes
                 if (SOCKET != null && SOCKET.isConnected()) {
                 
-                    System.out.println("Esperando un mensaje");
+                    System.out.println("Esperando un mensaje...");
                     this.dataIn();
                     System.out.println("Ha llegado un mensaje");
                 } else if (SOCKET != null) {
                 
                     this.setDownChannel();
-                    System.out.println("Conexión perdida, intentando reconectar...");
+                    System.out.println("Esprando conexion...");
                     Thread.sleep(5000);
                 }
             } catch (InterruptedException e) {
@@ -56,11 +56,10 @@ public class Channel implements Runnable {
         try {
             this.SOCKET = SOCKET;
             // Inicializar los objetos BufferedReader y PrintWriter
-            OutputStream os = SOCKET.getOutputStream();
+            OutputStream os = this.SOCKET.getOutputStream();
             this.out = new ObjectOutputStream(os);
-            InputStream is = SOCKET.getInputStream();
+            InputStream is = this.SOCKET.getInputStream();
             this.in = new ObjectInputStream(is);
-    
             // Una vez se ha creado el socket creamos el test channel para asegurar que siga funcionando
             this.testChanel = new TestChannel(this, 10000);
             new Thread(this.testChanel).start();
@@ -96,7 +95,56 @@ public class Channel implements Runnable {
     
     // Metodo para recibir informacion
     public void dataIn() {
-  
+        try {
+        
+            DataFrame data = (DataFrame) in.readObject();
+            if (data != null) {
+                switch (data.getDataFramType()) {
+                    case APLICATION_FRAME:
+                        
+                        break;
+                    case INTERNAL_INFO:
+                    
+                        break;
+                    case FRAME_REFUSED:
+                    
+                        break;
+                    case KEEP_ALIVE:
+                        System.out.println("Ping recibido");
+                        this.sendPingBack();
+                        break;
+                    case KEEP_ALIVE_BACK:
+                        System.out.println("Ping recibido de vuelta");
+                        recievedTime = System.currentTimeMillis();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }  
+    }
+    
+    public void sendPing() {
+        try {
+            DataFrame data = new DataFrame(DataFrameType.KEEP_ALIVE, "Ping");
+            out.writeObject(data);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendPingBack() {
+        try {
+            DataFrame data = new DataFrame(DataFrameType.KEEP_ALIVE_BACK, "PingBack");
+            out.writeObject(data);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     // Parar el hilo del test channel
@@ -108,10 +156,6 @@ public class Channel implements Runnable {
     }
 
     // Getters And Setters
-    public boolean isOk() {
-        return false;
-    }
-
     public TGComunications getTgComunications() {
         return tgComunications;
     }

@@ -6,12 +6,11 @@ import java.net.Socket;
 public class ServerConection implements Runnable{
     private TGComunications tgComunications;
     private ServerSocket SOCKET;
+    private int PORT = 8000;
     private Socket CLSOCK;
-    private int PORT;
 
-    public ServerConection(TGComunications tgComunications, int port) {
+    public ServerConection(TGComunications tgComunications) {
         this.tgComunications = tgComunications;
-        this.PORT = port;
         
         try {
             this.SOCKET = new ServerSocket(this.PORT);
@@ -26,7 +25,7 @@ public class ServerConection implements Runnable{
             try {
                 System.out.println("Servidor escuchando en: " + this.PORT);
                 createConnection();
-                Thread.sleep(10000);
+                Thread.sleep(5000);
             } catch (Exception e) {
                 System.out.println(e);
             }

@@ -20,25 +20,32 @@ public class ClientConection implements Runnable {
     public void createConnection() {
         if (this.tgComunications.getDownChannels() != null) {
             for (int i = 0; i < this.tgComunications.getDownChannels().size(); i++) {
+                System.out.println("Entramos a hacer la conexion");
                 try {
 
-                    System.out.println("Conectando como cliente...");
+                    System.out.println("Conectando como cliente al canal: " + i);
                     this.SOCKET = new Socket(this.tgComunications.getDownChannels().get(i).getInterlocutor().getIP(), 4000);
-                    System.out.println("Conexion como cliente realizada con exito");
                     this.tgComunications.getDownChannels().get(i).setSocket(this.SOCKET);
                     this.tgComunications.getChannels().add(this.tgComunications.getDownChannels().get(i));
+                    new Thread(this.tgComunications.getChannels().get(i)).start();
                     this.tgComunications.getDownChannels().remove(i);
-
                 } catch (Exception e) {
                 
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2500);
                     } catch (InterruptedException ex) {
 
                         throw new RuntimeException(ex);
                     }
                 }
             }
+        }
+        
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException ex) {
+
+            throw new RuntimeException(ex);
         }
     }
 
