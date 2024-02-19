@@ -1,4 +1,5 @@
 package Comunications;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -11,15 +12,21 @@ public class ServerConection implements Runnable{
     public ServerConection(TGComunications tgComunications, int port) {
         this.tgComunications = tgComunications;
         this.PORT = port;
-
+        
+        try {
+            this.SOCKET = new ServerSocket(this.PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     @Override
     public void run() {
         while (true) {
             try {
-                this.SOCKET = new ServerSocket(this.PORT);
+                System.out.println("Servidor escuchando en: " + this.PORT);
                 createConnection();
+                Thread.sleep(10000);
             } catch (Exception e) {
                 System.out.println(e);
             }

@@ -39,7 +39,7 @@ public class Channel implements Runnable {
                     System.out.println("Esperando un mensaje");
                     this.dataIn();
                     System.out.println("Ha llegado un mensaje");
-                } else {
+                } else if (SOCKET != null) {
                 
                     this.setDownChannel();
                     System.out.println("Conexión perdida, intentando reconectar...");
@@ -96,36 +96,7 @@ public class Channel implements Runnable {
     
     // Metodo para recibir informacion
     public void dataIn() {
-        Message m;
-        try {
-
-            while (SOCKET != null && (m = (Message) in.readObject()) != null) {
-                if (m.isPing()) {
-
-                    System.out.println("Ping recibido");
-                    return;
-                }
-
-                long time = (System.currentTimeMillis());
-                setRecievedTime(time);
-            }
-        } catch (Exception e) {
-
-            System.err.println("Error en la conexion");
-            this.setDownChannel();
-        }
-    }
-    
-    // Metodo para hacer pings y asegurar el funcionamiento correcto del Socket
-    public boolean ping() {
-        try {
-            System.out.println("Manda ping");
-            out.writeObject(Message.ping());
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error en el envío del heartbeat: " + e);
-            return false;
-        }
+  
     }
     
     // Parar el hilo del test channel
@@ -175,10 +146,6 @@ public class Channel implements Runnable {
 
     public Socket getSOCKET() {
         return SOCKET;
-    }
-
-    public void setSOCKET(Socket socket) {
-        this.SOCKET = socket;
     }
 
     public int getSendTime() {

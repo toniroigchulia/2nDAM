@@ -13,6 +13,15 @@ public class PeerIDIdentificator implements Runnable{
 
     @Override
     public void run() {
+        if(CLSOCK != null){
         
+            System.out.println("Direccion de la Conexion: " + CLSOCK.getInetAddress());
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 }

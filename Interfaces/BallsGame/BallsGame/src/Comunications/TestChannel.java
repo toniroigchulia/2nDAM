@@ -24,7 +24,7 @@ public class TestChannel implements Runnable {
             if (diferencia > timeOut) {
 
                 System.out.println("Health Care: el ultimo mensaje es de hace: " + diferencia);
-                if (channel.ping()) {
+                if (true) {
 
                     System.out.println("Health Care: Ping mandado correctamente");
                     try {
@@ -32,12 +32,13 @@ public class TestChannel implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } else {
+                } 
+                //else {
 
-                    System.out.println("Health Care: Detenido");
-                    channel.setDownChannel();
-                    working = false;
-                }
+                //     System.out.println("Health Care: Detenido");
+                //     channel.setDownChannel();
+                //     working = false;
+                // }
             }
         }
 
