@@ -7,7 +7,7 @@
 <mapper namespace="BookingsMapper.java"> 
 
     <insert id="carregarDadesXML" parameterType="java.util.Map">
-        INSERT INTO tu_tabla_reservas (
+        INSERT INTO reserves (
             location_number, id_client, client_name, id_agency, agency_name,
             price, room_type_id, hotel_name, check_in, room_nights
         )

@@ -7,13 +7,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 
@@ -152,7 +147,7 @@ public class MyBatis {
                     int roomNights = Integer.parseInt(bookingElement.getElementsByTagName("room_nights").item(0).getTextContent());
 
                     // Ahora puedes llamar al método del mapper con estos valores
-                    mapper.carregarDadesXML(locationNumber, clientId, clientName, agencyId, agencyName, price, roomTypeId, hotelName, checkIn, roomNights);
+                    mapper.carregarDadesXML(new BookingsBean(locationNumber, clientId, clientName, agencyId, agencyName, price, roomTypeId, hotelName, checkIn, roomNights));
                 }
             }
         } catch (Exception e) {

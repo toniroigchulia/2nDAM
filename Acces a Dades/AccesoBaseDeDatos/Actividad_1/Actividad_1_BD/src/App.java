@@ -210,36 +210,159 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Introduce el identificador de la agencia: ");
         String identificadorAgencia = scanner.next();
-        // Lógica para mostrar todas las reservas de la agencia con el identificador
-        // dado
-        System.out.println("Método para consultar reservas por agencia");
-        scanner.close();
+
+        try {
+            // Crear una sentencia SQL para seleccionar los datos de las reservas por
+            // identificador de agencia
+            String selectQuery = "SELECT * FROM reserva WHERE agency = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, identificadorAgencia);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Verificar si se encontraron resultados
+            if (resultSet.next()) {
+                System.out.println("Reservas para la agencia con identificador " + identificadorAgencia + ":");
+                do {
+                    // Obtener los datos de la reserva
+                    String locationNumber = resultSet.getString("location_number");
+                    String clientName = resultSet.getString("client");
+                    String price = resultSet.getString("price");
+                    String roomType = resultSet.getString("room");
+                    String hotelName = resultSet.getString("hotel");
+                    String checkIn = resultSet.getString("check_in");
+                    String roomNights = resultSet.getString("room_nights");
+
+                    // Mostrar los datos de la reserva
+                    System.out.println("Localizador: " + locationNumber);
+                    System.out.println("Cliente: " + clientName);
+                    System.out.println("Precio: " + price);
+                    System.out.println("Tipo de habitación: " + roomType);
+                    System.out.println("Hotel: " + hotelName);
+                    System.out.println("Check-in: " + checkIn);
+                    System.out.println("Noches de habitación: " + roomNights);
+                    System.out.println("-------------------------");
+                } while (resultSet.next());
+            } else {
+                System.out.println(
+                        "No se encontraron reservas para la agencia con identificador " + identificadorAgencia);
+            }
+
+            // Cerrar recursos
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            scanner.close();
+        }
     }
 
     // Método para insertar una reserva en la base de datos
     public static void insertarReserva() {
-        // Lógica para solicitar los datos y añadir una reserva a la base de datos
-        System.out.println("Método para insertar una reserva en la base de datos");
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Introduce el número de localización:");
+            String locationNumber = scanner.nextLine();
+            System.out.println("Introduce el nombre del cliente:");
+            String clientName = scanner.nextLine();
+            System.out.println("Introduce el nombre de la agencia:");
+            String agencyName = scanner.nextLine();
+            System.out.println("Introduce el precio:");
+            String price = scanner.nextLine();
+            System.out.println("Introduce el tipo de habitación:");
+            String roomType = scanner.nextLine();
+            System.out.println("Introduce el nombre del hotel:");
+            String hotelName = scanner.nextLine();
+            System.out.println("Introduce la fecha de check-in:");
+            String checkIn = scanner.nextLine();
+            System.out.println("Introduce el número de noches de habitación:");
+            String roomNights = scanner.nextLine();
+
+            // Preparar la consulta SQL para la inserción
+            String insertQuery = "INSERT INTO reserva (location_number, client, agency, price, room, hotel, check_in, room_nights) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+
+            // Establecer los valores en la consulta SQL
+            preparedStatement.setString(1, locationNumber);
+            preparedStatement.setString(2, clientName);
+            preparedStatement.setString(3, agencyName);
+            preparedStatement.setString(4, price);
+            preparedStatement.setString(5, roomType);
+            preparedStatement.setString(6, hotelName);
+            preparedStatement.setString(7, checkIn);
+            preparedStatement.setString(8, roomNights);
+
+            // Ejecutar la inserción
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.out.println("Reserva insertada correctamente.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Método para eliminar una reserva por su localizador
     public static void eliminarReserva() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Introduce el localizador de la reserva a eliminar: ");
-        String localitzador = scanner.next();
-        // Lógica para eliminar la reserva con el localizador dado de la base de datos
-        System.out.println("Método para eliminar una reserva por localizador");
-        scanner.close();
+        String localizador = scanner.next();
+        try {
+            // Crear una sentencia SQL para eliminar la reserva por localizador
+            String deleteQuery = "DELETE FROM reserva WHERE location_number = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(deleteQuery);
+            preparedStatement.setString(1, localizador);
+
+            // Ejecutar la eliminación
+            int filasEliminadas = preparedStatement.executeUpdate();
+
+            // Cerrar recursos
+            preparedStatement.close();
+            System.out.println("Se ha eliminado la reserva con localizador " + localizador + " correctamente.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Método para modificar una reserva por su localizador
     public static void modificarReserva() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Introduce el localizador de la reserva a modificar: ");
-        String localitzador = scanner.next();
-        // Lógica para modificar la reserva con el localizador dado en la base de datos
-        System.out.println("Método para modificar una reserva por localizador");
-        scanner.close();
+        String localizador = scanner.next();
+
+        try {
+            // Verificar si la reserva existe
+            String checkQuery = "SELECT * FROM reserva WHERE location_number = ?";
+            PreparedStatement checkStatement = conn.prepareStatement(checkQuery);
+            checkStatement.setString(1, localizador);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // La reserva existe, proceder con la modificación
+                System.out.println("Introduce el nuevo precio:");
+                String newPrice = scanner.next();
+
+                // Preparar la consulta SQL para la modificación
+                String updateQuery = "UPDATE reserva SET price = ? WHERE location_number = ?";
+                PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                updateStatement.setString(1, newPrice);
+                updateStatement.setString(2, localizador);
+
+                // Ejecutar la modificación
+                updateStatement.executeUpdate();
+                updateStatement.close();
+                System.out.println("Reserva modificada correctamente.");
+            } else {
+                System.out.println("No se encontró ninguna reserva con el localizador proporcionado.");
+            }
+
+            // Cerrar recursos
+            resultSet.close();
+            checkStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            scanner.close();
+        }
     }
 
     // Método para salir del programa
