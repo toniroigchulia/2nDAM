@@ -59,7 +59,7 @@ public class TGModel {
         int distanciaX = mainBallPosition.get(0) - possibleColisionBallPosition.get(0);
         int distanciaY = mainBallPosition.get(1) - possibleColisionBallPosition.get(1);
 
-        int distanciaEntreCentros = (int) (Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY));
+        int distanciaEntreCentros = (int) (Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY) + 20);
 
         return distanciaEntreCentros;
     }

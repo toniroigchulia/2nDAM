@@ -2,15 +2,16 @@ package Engine;
 import static java.lang.Thread.sleep;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Ball implements VisualObject, Runnable{
+public class Ball implements VisualObject, Runnable, Serializable{
     private Vector<Integer> nextPosition = new Vector<>();
     private Vector<Integer> position = new Vector<>();
     private Vector<Float> velocity = new Vector<>();
     private boolean bounceInmunity;
     private boolean alive = true;
-    private TGModel model;
+    private transient TGModel model;
     private int rad = 30;
     private int mass = 10;
     
