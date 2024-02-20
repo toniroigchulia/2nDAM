@@ -79,8 +79,17 @@ public class Channel implements Runnable {
     }
 
     // Metodo para mandar informacion
-    public synchronized void sendData() {
-
+    public synchronized void sendData(Object object) {
+        AppFrame appFrame = new AppFrame(AppFrameType.BALL, object);
+        DataFrame data = new DataFrame(DataFrameType.APLICATION_FRAME, appFrame);
+        
+        try {
+            out.writeObject(data);
+            out.flush();
+            System.out.println("Objeto mandado");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Metodo para recibir informacion
@@ -91,7 +100,9 @@ public class Channel implements Runnable {
             if (data != null) {
                 switch (data.getDataFramType()) {
                     case APLICATION_FRAME:
-
+                        
+                        this.tgComunications.addObject((AppFrame) data.getSendObject());
+                        System.out.println("Objecto Recibido");
                         break;
                     case INTERNAL_INFO:
 

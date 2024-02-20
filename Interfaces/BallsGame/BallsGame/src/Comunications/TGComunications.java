@@ -3,12 +3,13 @@ package Comunications;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import Engine.Ball;
 import MainController.TGController;
 
 public class TGComunications {
 
     private ArrayList<Channel> downChannels = new ArrayList<>();
-    private ArrayList<Channel> channels = new ArrayList<>();
+    private volatile ArrayList<Channel> channels = new ArrayList<>();
     private ClientConection clientConection;
     private ServerConection serverConection;
     
@@ -47,13 +48,17 @@ public class TGComunications {
         }
     }
 
-    // private void sendBall() {
+    public void sendObject(Ball ball, Enum<PeerLocation> direc) {
+        for(int i = 0; i < this.channels.size(); i++){
+            if(this.channels.get(i).getInterlocutor().getPeerLocation() == direc){
+                this.channels.get(i).sendData(ball);
+            }
+        }
+    }
 
-    // }
-
-    // private void addBall() {
-
-    // }
+    public void addObject(AppFrame appFrame) {
+        this.tgController.addObject(appFrame);
+    }
 
     // Getters And Setters
     public ArrayList<Channel> getChannels() {

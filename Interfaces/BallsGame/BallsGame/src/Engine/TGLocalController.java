@@ -1,6 +1,8 @@
 package Engine;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import Comunications.PeerLocation;
 import MainController.*;
 
 public class TGLocalController {
@@ -70,7 +72,7 @@ public class TGLocalController {
         // Bordes Laterales
         if (mainBall.getNextPosition().get(0) <= 0) {
 
-            if (!this.rules.checkGate()) {
+            if (!this.rules.checkGate(1)) {
 
                 bouncePosition.add(0);
                 bouncePosition.add(mainBall.getNextPosition().get(1));
@@ -78,13 +80,13 @@ public class TGLocalController {
                 mainBall.bounce(bouncePosition, 0);
             } else {
 
-                removeBall(mainBall);
+                sendObject(mainBall, PeerLocation.EAST);
             }
 
             return true;
         } else if (mainBall.getNextPosition().get(0) >= canvaSize.get(0)) {
 
-            if (!this.rules.checkGate()) {
+            if (!this.rules.checkGate(2)) {
 
                 bouncePosition.add(canvaSize.get(0));
                 bouncePosition.add(mainBall.getNextPosition().get(1));
@@ -92,7 +94,7 @@ public class TGLocalController {
                 mainBall.bounce(bouncePosition, 0);
             } else {
 
-                removeBall(mainBall);
+                sendObject(mainBall, PeerLocation.WEAST);
             }
 
             return true;
@@ -135,11 +137,45 @@ public class TGLocalController {
         this.tgModel.addBall(ball);
     }
 
-    public void removeBall(Ball ball) {
+    public void sendObject(Ball ball, Enum<PeerLocation> direc) {
+        this.tgController.sendObject(ball, direc);
         this.tgModel.removeBall(ball);
     }
-
+    
+    //Getters And Setters
     public ArrayList<Ball> getVisualElements() {
         return this.tgModel.getVisualElements();
+    }
+
+    public TGModel getTgModel() {
+        return tgModel;
+    }
+
+    public void setTgModel(TGModel tgModel) {
+        this.tgModel = tgModel;
+    }
+
+    public TGViewer getTgViewer() {
+        return tgViewer;
+    }
+
+    public void setTgViewer(TGViewer tgViewer) {
+        this.tgViewer = tgViewer;
+    }
+
+    public GameRules getRules() {
+        return rules;
+    }
+
+    public void setRules(GameRules rules) {
+        this.rules = rules;
+    }
+
+    public TGController getTgController() {
+        return tgController;
+    }
+
+    public void setTgController(TGController tgController) {
+        this.tgController = tgController;
     }
 }

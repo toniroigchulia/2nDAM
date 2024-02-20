@@ -1,4 +1,5 @@
 package MainController;
+
 import Engine.*;
 import java.util.ArrayList;
 import Comunications.*;
@@ -7,25 +8,57 @@ public class TGController {
     private TGLocalController tgLocalController;
     private TGComunications tgComunications;
     private ArrayList<Interlocutor> peerInterlocutors = new ArrayList<>();
+
     public static void main(String[] args) throws Exception {
-    
+
         TGController peerController = new TGController();
         peerController.init();
     }
-    
+
     public void init() {
-        this.peerInterlocutors.add(new Interlocutor("localhost", "der"));
-        //this.peerInterlocutors.add(new Interlocutor("localhost", "izq"));
+        this.peerInterlocutors.add(new Interlocutor("localhost", PeerLocation.EAST));
+        // this.peerInterlocutors.add(new Interlocutor("localhost",
+        // PeerLocation.WEAST));
         this.tgLocalController = new TGLocalController(this);
         this.tgComunications = new TGComunications(this);
     }
-    
-    public void addBall(){
-    
+
+    public void addObject(AppFrame appFrame) {
+        try {
+            switch (appFrame.getAppFrameType()) {
+                case BALL:
+                    
+                    this.tgLocalController.addBall((Ball) appFrame.getObject());
+                    break;
+                case ASTEROID:
+
+                    break;
+                case BULLET:
+
+                    break;
+                case CONTROL_ACTION:
+
+                    break;
+                case MISIL:
+
+                    break;
+                case PLAYER_SHIP:
+
+                    break;
+                case PLAYER_SHIP_ACTION:
+
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+        
+            System.out.println(e);
+        }
     }
-    
-    public void removeBall(){
-    
+
+    public void sendObject(Ball ball, Enum<PeerLocation> direc) {
+        this.tgComunications.sendObject(ball, direc);
     }
 
     public ArrayList<Interlocutor> getPeerInterlocutors() {

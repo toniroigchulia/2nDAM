@@ -2,18 +2,18 @@ package Comunications;
 
 public class Interlocutor {
     private String IP = "localhost";
-    private String interlocutorId;
+    private PeerLocation peerLocation;
     
-    public Interlocutor(String IP, String interlocutorId) {
+    public Interlocutor(String IP, PeerLocation peerLocation) {
         this.IP = IP;
-        this.interlocutorId = interlocutorId;
+        this.peerLocation = peerLocation;
     }
     
     public String getIP() {
         return IP;
     }
 
-    public String getInterlocutorId() {
-        return interlocutorId;
+    public Enum<PeerLocation> getPeerLocation() {
+        return peerLocation;
     }
 }
