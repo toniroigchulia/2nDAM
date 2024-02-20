@@ -1,5 +1,6 @@
 package Comunications;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 import MainController.TGController;
@@ -30,13 +31,29 @@ public class TGComunications {
         }
     }
 
-    private void sendBall() {
-
+    public void addChannel(Socket SOCKET, int index) {
+        this.getDownChannels().get(index).setSocket(SOCKET);
+        new Thread(this.getDownChannels().get(index)).start();
+        this.getChannels().add(this.getDownChannels().get(index));
+        this.getDownChannels().remove(index);
     }
 
-    private void addBall() {
-
+    public synchronized void moveToDownChannel(Channel channel) {
+        for (int i = 0; i < this.getChannels().size(); i++){
+            if (this.getChannels().get(i) == channel){
+                this.getDownChannels().add(channel);
+                this.getChannels().remove(i);
+            }
+        }
     }
+
+    // private void sendBall() {
+
+    // }
+
+    // private void addBall() {
+
+    // }
 
     // Getters And Setters
     public ArrayList<Channel> getChannels() {

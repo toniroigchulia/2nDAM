@@ -6,7 +6,7 @@ import Comunications.*;
 public class TGController {
     private TGLocalController tgLocalController;
     private TGComunications tgComunications;
-    private ArrayList<Interlocutor> peerInterlocutors = new ArrayList();
+    private ArrayList<Interlocutor> peerInterlocutors = new ArrayList<>();
     public static void main(String[] args) throws Exception {
     
         TGController peerController = new TGController();
@@ -14,8 +14,8 @@ public class TGController {
     }
     
     public void init() {
-        this.peerInterlocutors.add(new Interlocutor("localhost"));
-        //this.peerInterlocutors.add(new Interlocutor("localhost"));
+        this.peerInterlocutors.add(new Interlocutor("localhost", "der"));
+        //this.peerInterlocutors.add(new Interlocutor("localhost", "izq"));
         this.tgLocalController = new TGLocalController(this);
         this.tgComunications = new TGComunications(this);
     }
@@ -34,5 +34,13 @@ public class TGController {
 
     public void setPeerInterlocutors(ArrayList<Interlocutor> peerInterlocutors) {
         this.peerInterlocutors = peerInterlocutors;
+    }
+
+    public TGLocalController getTgLocalController() {
+        return tgLocalController;
+    }
+
+    public TGComunications getTgComunications() {
+        return tgComunications;
     }
 }

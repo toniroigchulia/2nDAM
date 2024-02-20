@@ -15,14 +15,16 @@ public class PeerIDIdentificator implements Runnable{
     public void run() {
         if(CLSOCK != null){
         
-            System.out.println("Direccion de la Conexion: " + CLSOCK.getInetAddress());
+            System.out.println("Direccion de la Conexion: " + CLSOCK.getInetAddress().getHostAddress());
             try {
+                for (int i = 0; i < this.serverConection.getTgComunications().getDownChannels().size(); i++) {
+                    //if(this.serverConection.getTgComunications().getDownChannels().get(i).getInterlocutor().getIP() == CLSOCK.getInetAddress().getHostAddress()){
+
+                        this.serverConection.getTgComunications().addChannel(CLSOCK, i);
+                    //}
+                }
                 Thread.sleep(5000);
-                this.serverConection.getTgComunications().getDownChannels().get(0).setSocket(this.CLSOCK);
-                this.serverConection.getTgComunications().getChannels().add(this.serverConection.getTgComunications().getDownChannels().get(0));
-                this.serverConection.getTgComunications().getDownChannels().remove(0);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

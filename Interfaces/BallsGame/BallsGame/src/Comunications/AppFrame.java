@@ -1,6 +1,7 @@
 package Comunications;
+import java.io.Serializable;
 
-public class AppFrame {
+public class AppFrame implements Serializable{
     private AppFrameType appFrameType;
     private Object object;
     

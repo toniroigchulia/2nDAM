@@ -1,6 +1,7 @@
 package Comunications;
+import java.io.Serializable;
 
-public class DataFrame {
+public class DataFrame implements Serializable {
     private DataFrameType dataFramType;
     private Object sendObject;
     

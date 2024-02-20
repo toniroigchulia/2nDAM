@@ -10,7 +10,7 @@ import java.net.Socket;
 public class Channel implements Runnable {
 
     private TGComunications tgComunications;
-    private TestChannel testChanel;
+    private HealthTestChannel testChanel;
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -30,29 +30,17 @@ public class Channel implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (SOCKET != null) {
 
-            try {
-                // Leer mensajes entrantes
-                if (SOCKET != null && SOCKET.isConnected()) {
-                
-                    System.out.println("Esperando un mensaje...");
-                    this.dataIn();
-                    System.out.println("Ha llegado un mensaje");
-                } else if (SOCKET != null) {
-                
-                    this.setDownChannel();
-                    System.out.println("Esprando conexion...");
-                    Thread.sleep(5000);
-                }
-            } catch (InterruptedException e) {
-
-                System.out.println(e);
-            }
+            // Leer mensajes entrantes
+            System.out.println("\n"+"Esperando un mensaje...");
+            this.dataIn();
         }
+
+        System.out.println("Thread Channel terminado");
     }
 
-    public void setSocket(Socket SOCKET) {
+    public synchronized void setSocket(Socket SOCKET) {
         try {
             this.SOCKET = SOCKET;
             // Inicializar los objetos BufferedReader y PrintWriter
@@ -60,8 +48,10 @@ public class Channel implements Runnable {
             this.out = new ObjectOutputStream(os);
             InputStream is = this.SOCKET.getInputStream();
             this.in = new ObjectInputStream(is);
-            // Una vez se ha creado el socket creamos el test channel para asegurar que siga funcionando
-            this.testChanel = new TestChannel(this, 10000);
+
+            // Una vez se ha creado el socket creamos el test channel para asegurar que siga
+            // funcionando
+            this.testChanel = new HealthTestChannel(this, 10000);
             new Thread(this.testChanel).start();
         } catch (IOException e) {
 
@@ -70,73 +60,78 @@ public class Channel implements Runnable {
     }
 
     public synchronized void setDownChannel() {
-        // Si detectamos que la conexion no funciona como queremos eliminamos el socket 
+        // Si detectamos que la conexion no funciona como queremos eliminamos el socket
         try {
 
             stopTestChannel();
             in.close();
             out.close();
             SOCKET.close();
-
+            SOCKET = null;
+            System.err.println("Matando el socket...");
         } catch (IOException e) {
 
             e.printStackTrace();
         } finally {
 
-            SOCKET = null;
-            System.err.println("Matando el socket...");
+            this.tgComunications.moveToDownChannel(this);
         }
     }
 
-    // Metodo para mandar informacion 
-    public void sendData() {
+    // Metodo para mandar informacion
+    public synchronized void sendData() {
 
     }
-    
+
     // Metodo para recibir informacion
-    public void dataIn() {
+    public synchronized void dataIn() {
         try {
-        
+
             DataFrame data = (DataFrame) in.readObject();
             if (data != null) {
                 switch (data.getDataFramType()) {
                     case APLICATION_FRAME:
-                        
+
                         break;
                     case INTERNAL_INFO:
-                    
+
                         break;
                     case FRAME_REFUSED:
-                    
+
                         break;
                     case KEEP_ALIVE:
+
                         System.out.println("Ping recibido");
                         this.sendPingBack();
                         break;
                     case KEEP_ALIVE_BACK:
+
                         System.out.println("Ping recibido de vuelta");
-                        recievedTime = System.currentTimeMillis();
+                        this.testChanel.setKillSocket(false);
+                        this.recievedTime = System.currentTimeMillis();
                         break;
                     default:
+
+                        System.out.println("Mensaje no tratado");
                         break;
                 }
             }
-            
         } catch (Exception e) {
-            e.printStackTrace();
-        }  
+            setDownChannel();
+        }
     }
-    
+
     public void sendPing() {
         try {
             DataFrame data = new DataFrame(DataFrameType.KEEP_ALIVE, "Ping");
             out.writeObject(data);
             out.flush();
+            System.out.println("Ping mandado");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void sendPingBack() {
         try {
             DataFrame data = new DataFrame(DataFrameType.KEEP_ALIVE_BACK, "PingBack");
@@ -146,7 +141,7 @@ public class Channel implements Runnable {
             e.printStackTrace();
         }
     }
-    
+
     // Parar el hilo del test channel
     public void stopTestChannel() {
         if (testChanel != null) {
@@ -164,11 +159,11 @@ public class Channel implements Runnable {
         this.tgComunications = tgComunications;
     }
 
-    public TestChannel getTestChanel() {
+    public HealthTestChannel getTestChanel() {
         return testChanel;
     }
 
-    public void setTestChanel(TestChannel testChanel) {
+    public void setTestChanel(HealthTestChannel testChanel) {
         this.testChanel = testChanel;
     }
 

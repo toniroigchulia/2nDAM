@@ -6,7 +6,7 @@ import java.net.Socket;
 public class ServerConection implements Runnable{
     private TGComunications tgComunications;
     private ServerSocket SOCKET;
-    private int PORT = 8000;
+    private int PORT = 9000;
     private Socket CLSOCK;
 
     public ServerConection(TGComunications tgComunications) {
@@ -37,6 +37,7 @@ public class ServerConection implements Runnable{
             
             System.out.println("Conectando como servidor...");
             this.CLSOCK = SOCKET.accept();
+            System.out.println("Conexion como servidor establecida");
             new Thread(new PeerIDIdentificator(this, this.CLSOCK)).start();
         } catch (Exception e) {
 
