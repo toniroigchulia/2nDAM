@@ -7,6 +7,7 @@ public class AppFrame implements Serializable{
     
     public AppFrame (AppFrameType appFrameType, Object object){
         this.appFrameType = appFrameType;
+        this.object = object;
     }
 
     public AppFrameType getAppFrameType() {

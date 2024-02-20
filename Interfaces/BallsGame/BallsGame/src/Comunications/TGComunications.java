@@ -9,7 +9,7 @@ import MainController.TGController;
 public class TGComunications {
 
     private ArrayList<Channel> downChannels = new ArrayList<>();
-    private volatile ArrayList<Channel> channels = new ArrayList<>();
+    private ArrayList<Channel> channels = new ArrayList<>();
     private ClientConection clientConection;
     private ServerConection serverConection;
     

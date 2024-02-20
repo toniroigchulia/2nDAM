@@ -48,8 +48,8 @@ public class Ball implements VisualObject, Runnable, Serializable{
         
         while (alive) {
             try {
-                sleep(20);
                 checkNextMove();
+                sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

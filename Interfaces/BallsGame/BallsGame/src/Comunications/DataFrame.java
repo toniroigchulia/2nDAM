@@ -7,6 +7,7 @@ public class DataFrame implements Serializable {
     
     public DataFrame(DataFrameType dataFramType, Object object){
         this.dataFramType = dataFramType;
+        this.sendObject = object;
     }
 
     public DataFrameType getDataFramType() {

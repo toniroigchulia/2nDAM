@@ -18,7 +18,7 @@ public class TGLocalController {
         this.tgController = controller;
     }
 
-    public synchronized void checkBallColison(Ball mainBall, ArrayList<Ball> ballsColiding) {
+    public void checkBallColison(Ball mainBall, ArrayList<Ball> ballsColiding) {
         // Colision contra otras bolas
         if (ballsColiding.size() > 0) {
             for (int i = 0; i < ballsColiding.size(); i++) {
@@ -72,7 +72,7 @@ public class TGLocalController {
         // Bordes Laterales
         if (mainBall.getNextPosition().get(0) <= 0) {
 
-            if (!this.rules.checkGate(1)) {
+            if (!this.rules.checkGate(2)) {
 
                 bouncePosition.add(0);
                 bouncePosition.add(mainBall.getNextPosition().get(1));
@@ -80,13 +80,13 @@ public class TGLocalController {
                 mainBall.bounce(bouncePosition, 0);
             } else {
 
-                sendObject(mainBall, PeerLocation.EAST);
+                sendObject(mainBall, PeerLocation.WEAST);
             }
 
             return true;
         } else if (mainBall.getNextPosition().get(0) >= canvaSize.get(0)) {
 
-            if (!this.rules.checkGate(2)) {
+            if (!this.rules.checkGate(1)) {
 
                 bouncePosition.add(canvaSize.get(0));
                 bouncePosition.add(mainBall.getNextPosition().get(1));
@@ -94,7 +94,7 @@ public class TGLocalController {
                 mainBall.bounce(bouncePosition, 0);
             } else {
 
-                sendObject(mainBall, PeerLocation.WEAST);
+                sendObject(mainBall, PeerLocation.EAST);
             }
 
             return true;
@@ -138,8 +138,8 @@ public class TGLocalController {
     }
 
     public void sendObject(Ball ball, Enum<PeerLocation> direc) {
-        this.tgController.sendObject(ball, direc);
         this.tgModel.removeBall(ball);
+        this.tgController.sendObject(ball, direc);
     }
     
     //Getters And Setters

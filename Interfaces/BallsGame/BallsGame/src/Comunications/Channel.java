@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import Engine.Ball;
+
 public class Channel implements Runnable {
 
     private TGComunications tgComunications;
@@ -33,7 +35,7 @@ public class Channel implements Runnable {
         while (SOCKET != null) {
 
             // Leer mensajes entrantes
-            System.out.println("\n"+"Esperando un mensaje...");
+            System.out.println("\n" + "Esperando un mensaje...");
             this.dataIn();
         }
 
@@ -80,15 +82,19 @@ public class Channel implements Runnable {
 
     // Metodo para mandar informacion
     public synchronized void sendData(Object object) {
-        AppFrame appFrame = new AppFrame(AppFrameType.BALL, object);
-        DataFrame data = new DataFrame(DataFrameType.APLICATION_FRAME, appFrame);
-        
-        try {
-            out.writeObject(data);
-            out.flush();
-            System.out.println("Objeto mandado");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (object instanceof Ball) {
+            Ball b = (Ball) object;
+
+            AppFrame appFrame = new AppFrame(AppFrameType.BALL, b);
+            DataFrame data = new DataFrame(DataFrameType.APLICATION_FRAME, appFrame);
+
+            try {
+                out.writeObject(data);
+                out.flush();
+                System.out.println("Objeto mandado");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -100,7 +106,7 @@ public class Channel implements Runnable {
             if (data != null) {
                 switch (data.getDataFramType()) {
                     case APLICATION_FRAME:
-                        
+
                         this.tgComunications.addObject((AppFrame) data.getSendObject());
                         System.out.println("Objecto Recibido");
                         break;

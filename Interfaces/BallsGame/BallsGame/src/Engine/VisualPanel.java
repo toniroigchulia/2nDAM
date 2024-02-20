@@ -30,7 +30,9 @@ public class VisualPanel extends Canvas implements Runnable, ActionListener {
         g.clearRect(0, 0, getWidth(), getHeight());
 
         for (int i = 0; i < elements.size(); i++) {
+
             g = elements.get(i).paint(g);
+
         }
 
         bufferStrategy.show();
@@ -41,7 +43,8 @@ public class VisualPanel extends Canvas implements Runnable, ActionListener {
     public void run() {
         while (true) {
             try {
-                if (this.isValid()) {
+                if (this.isValid() && this.viewer.getVisualElements() != null) {
+                    //System.out.println("Vamo a pintar: " + this.viewer.getVisualElements());
                     sleep(20);
                     paintElement(this.viewer.getVisualElements());
                 }

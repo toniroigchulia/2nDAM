@@ -19,8 +19,9 @@ public class TGModel {
     }
 
     public void addBall(Ball ball) {
+        System.out.println("Añadimos la bola a la array" + ball);
+        ball.setAlive(true);
         this.visualElements.add(ball);
-
         new Thread(ball).start();
     }
 
@@ -33,7 +34,7 @@ public class TGModel {
         }
     }
 
-    public synchronized void checkBallMovement(Ball ball) {
+    public void checkBallMovement(Ball ball) {
         ArrayList<Ball> ballsColiding = new ArrayList<>();
         ball.setBounceInmunity(false);
 
