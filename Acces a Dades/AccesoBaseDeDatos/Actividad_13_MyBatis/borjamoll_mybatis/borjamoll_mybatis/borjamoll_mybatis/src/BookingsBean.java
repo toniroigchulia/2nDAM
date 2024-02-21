@@ -1,10 +1,6 @@
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Bean booking
- * 
- */
 public class BookingsBean {
     private int locationNumber;
     private int clientId;
