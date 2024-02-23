@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class TGModel {
     private TGLocalController controller;
-    private ArrayList<Ball> visualElements = new ArrayList<>();
+    private volatile ArrayList<Ball> visualElements = new ArrayList<>();
 
     public TGModel(TGLocalController controller) {
         this.controller = controller;
@@ -19,7 +19,7 @@ public class TGModel {
     }
 
     public void addBall(Ball ball) {
-        System.out.println("Añadimos la bola a la array" + ball);
+        ball.setModel(this);
         ball.setAlive(true);
         this.visualElements.add(ball);
         new Thread(ball).start();
@@ -39,21 +39,26 @@ public class TGModel {
         ball.setBounceInmunity(false);
 
         for (int i = 0; i < visualElements.size(); i++) {
-            if ((isColiding(ball, visualElements.get(i))) && ball != visualElements.get(i) && !visualElements.get(i).isBounceInmunity()) {
+            if ((isColiding(ball, visualElements.get(i))) && ball != visualElements.get(i)
+                    && !visualElements.get(i).isBounceInmunity()) {
                 ball.setBounceInmunity(true);
                 ballsColiding.add(visualElements.get(i));
             }
         }
-        
+
         this.controller.checkBallColison(ball, ballsColiding);
     }
 
     private boolean isColiding(Ball mainBall, Ball possibleColisionBall) {
-        boolean impacto;
-        int distanciaCentros = calcColision(mainBall.getNextPosition(), possibleColisionBall.getNextPosition());
-        int sumaRadios = mainBall.getRad() + possibleColisionBall.getRad();
-        impacto = distanciaCentros <= sumaRadios;
-        return impacto;
+        if (possibleColisionBall != null) {
+            boolean impacto;
+            int distanciaCentros = calcColision(mainBall.getNextPosition(), possibleColisionBall.getNextPosition());
+            int sumaRadios = mainBall.getRad() + possibleColisionBall.getRad();
+            impacto = distanciaCentros <= sumaRadios;
+            return impacto;
+        }
+
+        return false;
     }
 
     private int calcColision(Vector<Integer> mainBallPosition, Vector<Integer> possibleColisionBallPosition) {
@@ -64,7 +69,7 @@ public class TGModel {
 
         return distanciaEntreCentros;
     }
-    
+
     public ArrayList<Ball> getVisualElements() {
         return this.visualElements;
     }

@@ -110,11 +110,11 @@ public class Ball implements VisualObject, Runnable, Serializable{
         this.rad = rad;
     }
 
-    public boolean isAlive() {
+    public synchronized boolean isAlive() {
         return alive;
     }
 
-    public void setAlive(boolean alive) {
+    public synchronized void setAlive(boolean alive) {
         this.alive = alive;
     }
 
@@ -150,7 +150,7 @@ public class Ball implements VisualObject, Runnable, Serializable{
         return bounceInmunity;
     }
 
-    public void setBounceInmunity(boolean bounceInmunity) {
+    public synchronized void setBounceInmunity(boolean bounceInmunity) {
         this.bounceInmunity = bounceInmunity;
     }
 }

@@ -81,7 +81,7 @@ public class Channel implements Runnable {
     }
 
     // Metodo para mandar informacion
-    public synchronized void sendData(Object object) {
+    public void sendData(Object object) {
         if (object instanceof Ball) {
             Ball b = (Ball) object;
 
@@ -99,10 +99,11 @@ public class Channel implements Runnable {
     }
 
     // Metodo para recibir informacion
-    public synchronized void dataIn() {
+    public void dataIn() {
         try {
 
             DataFrame data = (DataFrame) in.readObject();
+            this.recievedTime = System.currentTimeMillis();
             if (data != null) {
                 switch (data.getDataFramType()) {
                     case APLICATION_FRAME:
@@ -125,7 +126,6 @@ public class Channel implements Runnable {
 
                         System.out.println("Ping recibido de vuelta");
                         this.testChanel.setKillSocket(false);
-                        this.recievedTime = System.currentTimeMillis();
                         break;
                     default:
 

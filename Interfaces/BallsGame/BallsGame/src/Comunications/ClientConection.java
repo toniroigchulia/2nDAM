@@ -14,6 +14,13 @@ public class ClientConection implements Runnable {
         while (true) {
             this.SOCKET = new Socket();
             createConnection();
+            
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+    
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -23,7 +30,7 @@ public class ClientConection implements Runnable {
                 try {
 
                     System.out.println("Conectando como cliente al canal: " + i);
-                    this.SOCKET = new Socket(this.tgComunications.getDownChannels().get(i).getInterlocutor().getIP(), 4000);
+                    this.SOCKET = new Socket(this.tgComunications.getDownChannels().get(i).getInterlocutor().getIP(), 6000);
                     this.tgComunications.addChannel(SOCKET, i);
                     System.out.println("Conexion como cliente establecida");
                 } catch (Exception e) {
@@ -36,13 +43,6 @@ public class ClientConection implements Runnable {
                     }
                 }
             }
-        }
-        
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ex) {
-
-            throw new RuntimeException(ex);
         }
     }
 
