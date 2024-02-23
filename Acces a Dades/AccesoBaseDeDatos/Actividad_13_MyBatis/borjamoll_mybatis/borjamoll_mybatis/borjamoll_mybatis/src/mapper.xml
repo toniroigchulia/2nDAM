@@ -4,11 +4,15 @@
     PUBLIC "-//ibatis.apache.org//DTD SQL Map 3.0//EN"
     "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
-<mapper namespace="BookingsMapper.java"> 
+<mapper namespace="BookingsMapper">
 
-    <insert id="carregarDadesXML" parameterType="java.util.Map">
+    <delete id="eliminarTodasReservas">
+        TRUNCATE TABLE reserves;
+    </delete>
+
+    <insert id="agregarReserva" parameterType="BookingsBean">
         INSERT INTO reserves (
-            location_number, id_client, client_name, id_agency, agency_name,
+            location_number, client_id, client_name, agency_id, agency_name,
             price, room_type_id, hotel_name, check_in, room_nights
         )
         VALUES (
@@ -17,4 +21,27 @@
         )
     </insert>
 
+    <delete id="eliminarReservaPorId" parameterType="int">
+        DELETE FROM reserves WHERE id = #{id};
+    </delete>
+
+    <select id="obtenerReservaPorId" parameterType="int" resultType="BookingsBean">
+        SELECT * FROM reserves WHERE id = #{id};
+    </select>
+
+    <update id="actualizarReserva" parameterType="BookingsBean">
+        UPDATE reserves
+        SET
+            location_number = #{locationNumber},
+            client_id = #{clientId},
+            client_name = #{clientName},
+            agency_id = #{agencyId},
+            agency_name = #{agencyName},
+            price = #{price},
+            room_type_id = #{roomTypeId},
+            hotel_name = #{hotelName},
+            check_in = #{checkIn},
+            room_nights = #{roomNights}
+        WHERE id = #{id};
+    </update>
 </mapper>

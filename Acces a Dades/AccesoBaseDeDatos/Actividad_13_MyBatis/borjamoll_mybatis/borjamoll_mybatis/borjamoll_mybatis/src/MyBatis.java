@@ -12,21 +12,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 
-/**
- * Practica MyBatis
- */
 public class MyBatis {
-    /*
-     * Ejecucion del proceso
-     */
     public static void main(String[] args) {
-        // Inicializamos conexion
         BBDDManager bbdd = new BBDDManager();
         BBDDSesion sesion = new BBDDSesion();
         sesion.initSession();
         sesion.setRequiereCommit();
 
-        // Cargamos mapper
         BBDDManager.sqlMapper.getConfiguration().addMapper(BookingsMapper.class);
         BookingsMapper bookingMapper = sesion.getSession().getMapper(BookingsMapper.class);
 
@@ -44,26 +36,23 @@ public class MyBatis {
 
             System.out.print("Selecciona una opció: ");
             int opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar el buffer
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
                     carregarDadesXML(bookingMapper);
                     break;
                 case 2:
-                    descarregarDadesCSV();
+                    eliminarTotesDades(bookingMapper);
                     break;
                 case 3:
-                    eliminarTotesDades();
+                    afegirReserva(bookingMapper);
                     break;
                 case 4:
-                    afegirReserva();
+                    eliminarReserva(bookingMapper);
                     break;
                 case 5:
-                    eliminarReserva();
-                    break;
-                case 6:
-                    modificarReserva();
+                    modificarReserva(bookingMapper);
                     break;
                 case 0:
                     System.exit(0);
@@ -72,13 +61,12 @@ public class MyBatis {
                     System.out.println("Opció no vàlida.");
             }
 
-            // Cerramos sesion
             sesion.closeSession();
         }
     }
 
+    // Cargar datos
     private static void carregarDadesXML(BookingsMapper mapper) {
-
         System.out.print("Introdueix la ruta del fitxer XML: ");
         String rutaFitxerXML = new Scanner(System.in).nextLine();
 
@@ -87,34 +75,110 @@ public class MyBatis {
         System.out.println("Dades carregades amb èxit des de l'arxiu XML.");
     }
 
-    private static void descarregarDadesCSV() {
-        // Lógica para descargar datos desde la base de datos a un archivo CSV
-        System.out.println("Descarregant les dades a l'arxiu CSV...");
+    // Eliminar datos
+    private static void eliminarTotesDades(BookingsMapper mapper) {
+        mapper.eliminarTodasReservas();
+        System.out.println("Totes les dades de reserves eliminades de la base de dades.");
     }
 
-    private static void eliminarTotesDades() {
-        // Lógica para eliminar todas las datos de la base de datos
-        System.out.println("Eliminant totes les dades de la base de dades...");
+    // Añadir reservas
+    private static void afegirReserva(BookingsMapper mapper) {
+        Scanner scanner = new Scanner(System.in);
+    
+        System.out.println("Introdueix les dades de la reserva:");
+        System.out.print("Número de localització: ");
+        int locationNumber = scanner.nextInt();
+        System.out.print("ID del client: ");
+        int clientId = scanner.nextInt();
+        System.out.print("Nom del client: ");
+        String clientName = scanner.next();
+        System.out.print("ID de l'agència: ");
+        int agencyId = scanner.nextInt();
+        System.out.print("Nom de l'agència: ");
+        String agencyName = scanner.next();
+        System.out.print("Preu: ");
+        BigDecimal price = scanner.nextBigDecimal();
+        System.out.print("ID del tipus d'habitació: ");
+        int roomTypeId = scanner.nextInt();
+        System.out.print("Nom de l'hotel: ");
+        String hotelName = scanner.next();
+        System.out.print("Data d'entrada (dd/MM/yyyy): ");
+        String checkInStr = scanner.next();
+        LocalDate checkIn = LocalDate.parse(checkInStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.print("Nits de l'habitació: ");
+        int roomNights = scanner.nextInt();
+    
+        BookingsBean reserva = new BookingsBean(locationNumber, clientId, clientName, agencyId, agencyName, price, roomTypeId, hotelName, checkIn, roomNights);
+    
+        mapper.agregarReserva(reserva);
+        System.out.println("Reserva afegida amb èxit a la base de dades.");
     }
 
-    private static void afegirReserva() {
-        // Lógica para añadir una reserva a la base de datos
-        System.out.println("Afegint una nova reserva a la base de dades...");
+    // Eliminar reserva
+    private static void eliminarReserva(BookingsMapper mapper) {
+        Scanner scanner = new Scanner(System.in);
+    
+        System.out.print("Introdueix l'identificador de la reserva a eliminar: ");
+        int idReserva = scanner.nextInt();
+    
+        mapper.eliminarReservaPorId(idReserva);
+        System.out.println("Reserva eliminada amb èxit de la base de dades.");
     }
 
-    private static void eliminarReserva() {
-        // Lógica para eliminar una reserva de la base de datos
-        System.out.println("Eliminant una reserva de la base de dades...");
-    }
-
-    private static void modificarReserva() {
-        // Lógica para modificar una reserva en la base de datos
-        System.out.println("Modificant una reserva a la base de dades...");
+    // Modificar reserva
+    private static void modificarReserva(BookingsMapper mapper) {
+        Scanner scanner = new Scanner(System.in);
+    
+        System.out.print("Introdueix l'identificador de la reserva a modificar: ");
+        int idReserva = scanner.nextInt();
+    
+        BookingsBean reservaActual = mapper.obtenerReservaPorId(idReserva);
+    
+        System.out.println("Detalls de la reserva actual:");
+        System.out.println(reservaActual.toString());
+    
+        System.out.println("Introdueix els nous detalls de la reserva:");
+    
+        System.out.print("Número de localització: ");
+        int locationNumber = scanner.nextInt();
+        System.out.print("ID del client: ");
+        int clientId = scanner.nextInt();
+        System.out.print("Nom del client: ");
+        String clientName = scanner.next();
+        System.out.print("ID de l'agència: ");
+        int agencyId = scanner.nextInt();
+        System.out.print("Nom de l'agència: ");
+        String agencyName = scanner.next();
+        System.out.print("Preu: ");
+        BigDecimal price = scanner.nextBigDecimal();
+        System.out.print("ID del tipus d'habitació: ");
+        int roomTypeId = scanner.nextInt();
+        System.out.print("Nom de l'hotel: ");
+        String hotelName = scanner.next();
+        System.out.print("Data d'entrada (dd/MM/yyyy): ");
+        String checkInStr = scanner.next();
+        LocalDate checkIn = LocalDate.parse(checkInStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.print("Nits de l'habitació: ");
+        int roomNights = scanner.nextInt();
+    
+        reservaActual.setLocationNumber(locationNumber);
+        reservaActual.setClientId(clientId);
+        reservaActual.setClientName(clientName);
+        reservaActual.setAgencyId(agencyId);
+        reservaActual.setAgencyName(agencyName);
+        reservaActual.setPrice(price);
+        reservaActual.setRoomTypeId(roomTypeId);
+        reservaActual.setHotelName(hotelName);
+        reservaActual.setCheckIn(checkIn);
+        reservaActual.setRoomNights(roomNights);
+    
+        mapper.actualizarReserva(reservaActual);
+        System.out.println("Reserva modificada amb èxit a la base de dades.");
     }
     
+    // Cargar Xml a la base de datos
     private static void parseXmlFile(String rutaArchivoXML, BookingsMapper mapper) {
         try {
-            // Aquí verifica si la cadena es una ruta válida
             File xmlFile = new File("C:\\Users\\toni1\\OneDrive\\Documentos\\DAM\\2nDAM\\2nDAM\\Acces a Dades\\AccesoBaseDeDatos\\Actividad_13_MyBatis\\borjamoll_mybatis\\borjamoll_mybatis\\borjamoll_mybatis\\src\\bookings.xml");
             if (!xmlFile.exists()) {
                 System.out.println("El archivo XML no existe en la ruta proporcionada.");
@@ -146,8 +210,7 @@ public class MyBatis {
                     LocalDate checkIn = LocalDate.parse(bookingElement.getElementsByTagName("check_in").item(0).getTextContent(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                     int roomNights = Integer.parseInt(bookingElement.getElementsByTagName("room_nights").item(0).getTextContent());
 
-                    // Ahora puedes llamar al método del mapper con estos valores
-                    mapper.carregarDadesXML(new BookingsBean(locationNumber, clientId, clientName, agencyId, agencyName, price, roomTypeId, hotelName, checkIn, roomNights));
+                    mapper.agregarReserva(new BookingsBean(locationNumber, clientId, clientName, agencyId, agencyName, price, roomTypeId, hotelName, checkIn, roomNights));
                 }
             }
         } catch (Exception e) {
