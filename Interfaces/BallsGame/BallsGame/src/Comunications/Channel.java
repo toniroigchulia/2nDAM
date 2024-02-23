@@ -103,6 +103,7 @@ public class Channel implements Runnable {
         try {
 
             DataFrame data = (DataFrame) in.readObject();
+            this.recievedTime = System.currentTimeMillis();
             if (data != null) {
                 switch (data.getDataFramType()) {
                     case APLICATION_FRAME:
@@ -125,7 +126,6 @@ public class Channel implements Runnable {
 
                         System.out.println("Ping recibido de vuelta");
                         this.testChanel.setKillSocket(false);
-                        this.recievedTime = System.currentTimeMillis();
                         break;
                     default:
 

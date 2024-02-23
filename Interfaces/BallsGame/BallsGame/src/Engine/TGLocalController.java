@@ -1,4 +1,5 @@
 package Engine;
+
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -44,13 +45,13 @@ public class TGLocalController {
         }
 
         if ((mainBall.getVelocity().get(1) > 0 && otherBall.getVelocity().get(1) < 0)
-        || (mainBall.getVelocity().get(1) < 0 && otherBall.getVelocity().get(1) > 0)) {
-            
+                || (mainBall.getVelocity().get(1) < 0 && otherBall.getVelocity().get(1) > 0)) {
+
             mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
             otherBall.getVelocity().set(1, otherBall.getVelocity().get(1) * (-1));
         }
-        
-        //Si las bolas tienen la misma direccion
+
+        // Si las bolas tienen la misma direccion
         if ((mainBall.getVelocity().get(0) > 0 && otherBall.getVelocity().get(0) > 0)
                 || (mainBall.getVelocity().get(0) < 0 && otherBall.getVelocity().get(0) < 0)) {
 
@@ -68,7 +69,7 @@ public class TGLocalController {
         // Colision contra bordes
         Vector<Integer> canvaSize = this.getCanvasSize();
         Vector<Integer> bouncePosition = new Vector<>();
-        
+
         // Bordes Laterales
         if (mainBall.getNextPosition().get(0) <= 0) {
 
@@ -134,6 +135,15 @@ public class TGLocalController {
     }
 
     public void addBall(Ball ball) {
+
+        if (ball.getPosition().get(0) == 0) {
+
+            ball.getPosition().set(0, getCanvasSize().get(0));
+        } else if (ball.getPosition().get(0) == getCanvasSize().get(0)) {
+
+            ball.getPosition().set(0, 0);
+        }
+
         this.tgModel.addBall(ball);
     }
 
@@ -141,8 +151,8 @@ public class TGLocalController {
         this.tgModel.removeBall(ball);
         this.tgController.sendObject(ball, direc);
     }
-    
-    //Getters And Setters
+
+    // Getters And Setters
     public ArrayList<Ball> getVisualElements() {
         return this.tgModel.getVisualElements();
     }

@@ -26,7 +26,7 @@ public class HealthTestChannel implements Runnable {
                     System.out.println("Health Care: el ultimo mensaje es de hace: " + diferencia);
                     this.killSocket = true;
                     this.channel.sendPing();
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                     if (this.killSocket == true) {
 
                         System.out.println("Health Care detenido, matando socket");

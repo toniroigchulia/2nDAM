@@ -6,7 +6,7 @@ import java.net.Socket;
 public class ServerConection implements Runnable{
     private TGComunications tgComunications;
     private ServerSocket SOCKET;
-    private int PORT = 5000;
+    private int PORT = 4000;
     private Socket CLSOCK;
 
     public ServerConection(TGComunications tgComunications) {
