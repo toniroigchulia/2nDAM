@@ -27,11 +27,10 @@ public class MyBatis {
         while (true) {
             System.out.println("\n" + "Menú Principal:");
             System.out.println("1. Carregar les dades d'un fitxer xml");
-            System.out.println("2. Descarregar les dades a un fitxer csv");
-            System.out.println("3. Eliminar totes les dades de la base de dades");
-            System.out.println("4. Afegeix una reserva");
-            System.out.println("5. Eliminar una reserva");
-            System.out.println("6. Modificar una reserva");
+            System.out.println("2. Eliminar totes les dades de la base de dades");
+            System.out.println("3. Afegeix una reserva");
+            System.out.println("4. Eliminar una reserva");
+            System.out.println("5. Modificar una reserva");
             System.out.println("0. Sortir");
 
             System.out.print("Selecciona una opció: ");
