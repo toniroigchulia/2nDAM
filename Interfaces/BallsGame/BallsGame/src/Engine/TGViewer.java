@@ -65,7 +65,10 @@ public class TGViewer extends JFrame implements MouseListener {
         ballVelocity.add(ballInitPosition.get(0) - e.getX());
         ballVelocity.add(ballInitPosition.get(1) - e.getY());
         
-        this.controller.addBall(ballVelocity, ballInitPosition);
+        if(!((ballVelocity.get(0) == 0) && (ballVelocity.get(1) == 0))){
+        
+            this.controller.addBall(ballVelocity, ballInitPosition);
+        }
     }
     
     @Override

@@ -51,6 +51,7 @@ public class TGComunications {
     public void sendObject(Ball ball, Enum<PeerLocation> direc) {
         for(int i = 0; i < this.channels.size(); i++){
             if(this.channels.get(i).getInterlocutor().getPeerLocation() == direc){
+                System.out.println("Bola mandada TGComunications");
                 this.channels.get(i).sendData(ball);
             }
         }

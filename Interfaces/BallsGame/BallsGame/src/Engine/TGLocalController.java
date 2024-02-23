@@ -63,6 +63,17 @@ public class TGLocalController {
 
             mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
         }
+        
+        // Si una de las velocidades es 0
+        if (otherBall.getVelocity().get(0) == 0) {
+            
+            mainBall.getVelocity().set(0, mainBall.getVelocity().get(0) * (-1));
+        }
+        
+        if (otherBall.getVelocity().get(1) == 0) {
+            
+            mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
+        }
     }
 
     private boolean borderBounce(Ball mainBall) {
@@ -135,12 +146,17 @@ public class TGLocalController {
     }
 
     public void addBall(Ball ball) {
-
-        if (ball.getPosition().get(0) == 0) {
-
-            ball.getPosition().set(0, getCanvasSize().get(0));
-        } else if (ball.getPosition().get(0) == getCanvasSize().get(0)) {
-
+        Vector<Integer> newPosition = new Vector<Integer>();
+        newPosition.add(0);
+        newPosition.add(ball.getPosition().get(1));
+        
+        if (ball.getPosition().get(0) >= getCanvasSize().get(0)/2) {
+            
+            newPosition.set(0, 5 + ball.getRad());
+            ball.setPosition(newPosition);
+        } else if (ball.getPosition().get(0) < getCanvasSize().get(0)/2) {
+            
+            newPosition.set(0, getCanvasSize().get(0) - 5 - ball.getRad());
             ball.getPosition().set(0, 0);
         }
 
@@ -149,7 +165,11 @@ public class TGLocalController {
 
     public void sendObject(Ball ball, Enum<PeerLocation> direc) {
         this.tgModel.removeBall(ball);
-        this.tgController.sendObject(ball, direc);
+        
+        if(!ball.isAlive()){
+            System.out.println("BolaMandada local");
+            this.tgController.sendObject(ball, direc);
+        }
     }
 
     // Getters And Setters

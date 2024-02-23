@@ -14,32 +14,38 @@ public class HealthTestChannel implements Runnable {
 
     @Override
     public void run() {
-        while (working) {
-            // Verificar si ha pasado más tiempo que timeOut desde que se
-            // recibió el último mensaje
-            long currentTime = System.currentTimeMillis();
-            long timeLastMessage = channel.getRecievedTime();
-            long diferencia = currentTime - timeLastMessage;
-
-            if (diferencia > timeOut) {
-                try {
-                    System.out.println("Health Care: el ultimo mensaje es de hace: " + diferencia);
-                    this.killSocket = true;
-                    this.channel.sendPing();
-                    Thread.sleep(5000);
-                    if (this.killSocket == true) {
-
-                        System.out.println("Health Care detenido, matando socket");
-                        channel.setDownChannel();
-                        working = false;
+        try {
+            Thread.sleep(10000);
+            while (working) {
+                // Verificar si ha pasado más tiempo que timeOut desde que se
+                // recibió el último mensaje
+                long currentTime = System.currentTimeMillis();
+                long timeLastMessage = channel.getRecievedTime();
+                long diferencia = currentTime - timeLastMessage;
+    
+                if (diferencia > timeOut) {
+                    try {
+                        if (this.killSocket == true) {
+    
+                            System.out.println("Health Care detenido, matando socket");
+                            channel.setDownChannel();
+                            working = false;
+                        }
+                        
+                        System.out.println("Health Care: el ultimo mensaje es de hace: " + diferencia);
+                        this.killSocket = true;
+                        this.channel.sendPing();
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
+    
+            System.out.println("Thread Test Chanel terminado");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
-        System.out.println("Thread Test Chanel terminado");
     }
 
     public void pararEjecucion() {
