@@ -18,6 +18,7 @@ public class PeerIDIdentificator implements Runnable{
             System.out.println("Direccion de la Conexion: " + CLSOCK.getInetAddress().getHostAddress());
             try {
                 for (int i = 0; i < this.serverConection.getTgComunications().getDownChannels().size(); i++) {
+                    // Si el programa se ejecuta en varios ordenadores descomentar el IF para que el ServerConector compruebe si la conexion es valida o no.
                     //if(this.serverConection.getTgComunications().getDownChannels().get(i).getInterlocutor().getIP() == CLSOCK.getInetAddress().getHostAddress()){
 
                         this.serverConection.getTgComunications().addChannel(CLSOCK, i);
