@@ -1,6 +1,6 @@
 package Engine;
 
-public abstract class DinamicVO extends VisualObject implements Runnable {
+public abstract class DinamicVO extends VisualObject implements Runnable{
     public VectorDTO velocity;
     public CoordinatesDTO position;
     public CoordinatesDTO nextPosition;

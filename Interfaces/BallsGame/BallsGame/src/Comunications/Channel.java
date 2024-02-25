@@ -134,6 +134,8 @@ public class Channel implements Runnable {
                 }
             }
         } catch (Exception e) {
+
+            System.out.println(e);
             setDownChannel();
         }
     }

@@ -1,6 +1,8 @@
 package Engine;
 
-public class CoordinatesDTO {
+import java.io.Serializable;
+
+public class CoordinatesDTO implements Serializable{
     private int x;
     private int y;
 

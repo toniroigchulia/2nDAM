@@ -2,9 +2,8 @@ package Engine;
 import static java.lang.Thread.sleep;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.Serializable;
 
-public class Ball extends DinamicVO implements Serializable{
+public class Ball extends DinamicVO {
     private transient TGModel model;
     private boolean alive = true;
     private float mass = 5;
@@ -13,7 +12,7 @@ public class Ball extends DinamicVO implements Serializable{
 
     // CONSTRUCTOR
     public Ball(TGModel model, VectorDTO velocity, CoordinatesDTO position) {
-        super(model.simplifyVelocity(velocity), position, new CoordinatesDTO(0, 0));
+        super(velocity, position, new CoordinatesDTO(0, 0));
         this.model = model;
     }
     

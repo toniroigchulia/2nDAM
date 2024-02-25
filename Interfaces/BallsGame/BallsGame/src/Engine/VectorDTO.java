@@ -1,6 +1,8 @@
 package Engine;
 
-public class VectorDTO {
+import java.io.Serializable;
+
+public class VectorDTO implements Serializable{
     private float x;
     private float y;
 

@@ -30,7 +30,7 @@ public class TGModel {
     }
 
     public void addBall(VectorDTO ballVelocity, CoordinatesDTO ballInitPosition) {
-        Ball ball = new Ball(this, ballVelocity, ballInitPosition);
+        Ball ball = new Ball(this, simplifyVelocity(ballVelocity), ballInitPosition);
         this.visualElements.add(ball);
 
         new Thread(ball).start();
