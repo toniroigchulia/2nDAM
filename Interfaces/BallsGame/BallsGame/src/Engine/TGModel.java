@@ -1,17 +1,35 @@
 package Engine;
-
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.Collections;
+import java.util.List;
 
 public class TGModel {
     private TGLocalController controller;
-    private volatile ArrayList<Ball> visualElements = new ArrayList<>();
+    private List<VisualObject> visualElements = Collections.synchronizedList(new ArrayList<>()); 
 
+
+    // CONSTRUCTOR
     public TGModel(TGLocalController controller) {
         this.controller = controller;
     }
 
-    public void addBall(Vector<Integer> ballVelocity, Vector<Integer> ballInitPosition) {
+
+    // METODOS
+    public VectorDTO simplifyVelocity(VectorDTO velocity) {
+        VectorDTO normalizedVel = new VectorDTO(0, 0);
+        float x = velocity.getX();
+        float y = velocity.getY();
+
+        float normalizedX = (float) (x / 20);
+        float normalizedY = (float) (y / 20);
+
+        normalizedVel.setX(normalizedX);
+        normalizedVel.setY(normalizedY);
+
+        return normalizedVel;
+    }
+
+    public void addBall(VectorDTO ballVelocity, CoordinatesDTO ballInitPosition) {
         Ball ball = new Ball(this, ballVelocity, ballInitPosition);
         this.visualElements.add(ball);
 
@@ -34,15 +52,16 @@ public class TGModel {
         }
     }
 
-    public void checkBallMovement(Ball ball) {
+    public synchronized void checkBallMovement(Ball ball) {
         ArrayList<Ball> ballsColiding = new ArrayList<>();
-        ball.setBounceInmunity(false);
 
         for (int i = 0; i < visualElements.size(); i++) {
-            if ((isColiding(ball, visualElements.get(i))) && ball != visualElements.get(i)
-                    && !visualElements.get(i).isBounceInmunity()) {
-                ball.setBounceInmunity(true);
-                ballsColiding.add(visualElements.get(i));
+            if(visualElements.get(i) instanceof Ball){
+
+                if ((isColiding(ball, ((Ball) visualElements.get(i)))) && ball != ((Ball) visualElements.get(i))) {
+    
+                    ballsColiding.add((Ball) visualElements.get(i));
+                }
             }
         }
 
@@ -61,16 +80,18 @@ public class TGModel {
         return false;
     }
 
-    private int calcColision(Vector<Integer> mainBallPosition, Vector<Integer> possibleColisionBallPosition) {
-        int distanciaX = mainBallPosition.get(0) - possibleColisionBallPosition.get(0);
-        int distanciaY = mainBallPosition.get(1) - possibleColisionBallPosition.get(1);
+    private int calcColision(CoordinatesDTO mainBallPosition, CoordinatesDTO possibleColisionBallPosition) {
+        int distanciaX = mainBallPosition.getX() - possibleColisionBallPosition.getX();
+        int distanciaY = mainBallPosition.getY() - possibleColisionBallPosition.getY();
 
         int distanciaEntreCentros = (int) (Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY) + 20);
 
         return distanciaEntreCentros;
     }
 
-    public ArrayList<Ball> getVisualElements() {
+
+    // GETTERS AND SETTERS
+    public List<VisualObject> getVisualElements() {
         return this.visualElements;
     }
 }

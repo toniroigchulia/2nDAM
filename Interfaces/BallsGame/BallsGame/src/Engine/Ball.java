@@ -3,48 +3,39 @@ import static java.lang.Thread.sleep;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
-import java.util.Vector;
 
-public class Ball implements VisualObject, Runnable, Serializable{
-    private Vector<Integer> nextPosition = new Vector<>();
-    private Vector<Integer> position = new Vector<>();
-    private Vector<Float> velocity = new Vector<>();
-    private boolean bounceInmunity;
-    private boolean alive = true;
+public class Ball extends DinamicVO implements Serializable{
     private transient TGModel model;
+    private boolean alive = true;
+    private float mass = 5;
     private int rad = 30;
-    private int mass = 10;
     
-    public Ball(TGModel model, Vector<Integer> velocity, Vector<Integer> position) {
-        this.velocity = simplifyVelocity(velocity);
-        this.position = position;
+
+    // CONSTRUCTOR
+    public Ball(TGModel model, VectorDTO velocity, CoordinatesDTO position) {
+        super(model.simplifyVelocity(velocity), position, new CoordinatesDTO(0, 0));
         this.model = model;
     }
     
-    private Vector<Float> simplifyVelocity(Vector<Integer> ballVelocity) {
-        Vector<Float> vectorFloat = new Vector<>();
-        int x = ballVelocity.get(0);
-        int y = ballVelocity.get(1);
 
-        float normalizedX = (float) (x / 25);
-        float normalizedY = (float) (y / 25);
-
-        vectorFloat.add(normalizedX);
-        vectorFloat.add(normalizedY);
-
-        return vectorFloat;
-    }
-    
+    // METODOS
     public void checkNextMove(){
-        this.getNextPosition();
+        this.calcNewPosition();
         
         this.model.checkBallMovement(this);
+    }
+
+    @Override
+    public synchronized void calcNewPosition() {
+        nextPosition.setX(Math.round(position.getX() + (velocity.getX())));
+        nextPosition.setY(Math.round(position.getY() + (velocity.getY())));
+        
     }
     
     @Override
     public void run() {
-        nextPosition.add(Math.round(position.get(0) + (velocity.get(0))));
-        nextPosition.add(Math.round(position.get(1) + (velocity.get(1))));
+        nextPosition.setX(Math.round(position.getX() + (velocity.getX())));
+        nextPosition.setY(Math.round(position.getY() + (velocity.getY())));
         
         while (alive) {
             try {
@@ -56,101 +47,69 @@ public class Ball implements VisualObject, Runnable, Serializable{
         }
     }
     
-    @Override
     public void move() {
-        position.set(0, this.nextPosition.get(0));
-        position.set(1, this.nextPosition.get(1));
+        position.setX(this.nextPosition.getX());
+        position.setY(this.nextPosition.getY());
     }
     
-    @Override
-    public void bounce(Vector<Integer> bouncePosition, int bounceDirection) {
-        position.set(0, bouncePosition.get(0));
-        position.set(1, bouncePosition.get(1));
+    public void bounce(CoordinatesDTO bouncePosition, int bounceDirection) {
+        position.setX(bouncePosition.getX());
+        position.setY(bouncePosition.getY());
         
         if(bounceDirection == 0){
             
-            this.velocity.set(0, this.velocity.get(0) * (-1));
+            this.velocity.setX(this.velocity.getX() * (-1));
         } else {
             
-            this.velocity.set(1, this.velocity.get(1) * (-1));
+            this.velocity.setY(this.velocity.getY() * (-1));
         }
     }
     
     @Override
     public Graphics paint(Graphics g) {
         g.setColor(Color.red);
-        g.fillOval(this.position.get(0) - rad, this.position.get(1) - rad, rad, rad);
+        g.fillOval(this.position.getX() - rad, this.position.getY() - rad, rad, rad);
         return g;
     }
 
-    @Override
-    public void kill() {
-    }
-    
-    public synchronized Vector<Integer> getNextPosition() {
-        nextPosition.set(0, Math.round(position.get(0) + (velocity.get(0))));
-        nextPosition.set(1, Math.round(position.get(1) + (velocity.get(1))));
-        
-        return nextPosition;
-    }
 
-    public Vector<Integer> getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vector<Integer> position) {
-        this.position = position;
-    }
-
-    public int getRad() {
-        return rad;
-    }
-
-    public void setRad(int rad) {
-        this.rad = rad;
-    }
-
-    public synchronized boolean isAlive() {
-        return alive;
-    }
-
-    public synchronized void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
+    //GETTERS AND SETTERS
     public TGModel getModel() {
         return model;
     }
+
 
     public void setModel(TGModel model) {
         this.model = model;
     }
 
-    public Vector<Float> getVelocity() {
-        return velocity;
+
+    public boolean isAlive() {
+        return alive;
     }
 
-    public void setVelocity(Vector<Float> velocity) {
-        this.velocity = velocity;
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
-    public void setNextPosition(Vector<Integer> nextPosition) {
-        this.nextPosition = nextPosition;
-    }
 
-    public int getMass() {
+    public float getMass() {
         return mass;
     }
 
-    public void setMass(int mass) {
+
+    public void setMass(float mass) {
         this.mass = mass;
     }
 
-    public boolean isBounceInmunity() {
-        return bounceInmunity;
+
+    public int getRad() {
+        return rad;
     }
 
-    public synchronized void setBounceInmunity(boolean bounceInmunity) {
-        this.bounceInmunity = bounceInmunity;
+
+    public void setRad(int rad) {
+        this.rad = rad;
     }
 }

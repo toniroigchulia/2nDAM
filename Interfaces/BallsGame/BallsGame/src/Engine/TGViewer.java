@@ -2,8 +2,7 @@ package Engine;
 import javax.swing.JFrame;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -14,8 +13,8 @@ public class TGViewer extends JFrame implements MouseListener {
     private int xSize = 920;
     private int ySize = 720;
     
-    private Vector<Integer> ballVelocity;
-    private Vector<Integer> ballInitPosition;
+    private VectorDTO ballVelocity;
+    private CoordinatesDTO ballInitPosition;
 
     public TGViewer(TGLocalController controller) {
         this.controlPanel = new ControlPanel();
@@ -48,24 +47,24 @@ public class TGViewer extends JFrame implements MouseListener {
         this.add(visualPanel, c);
     }
     
-    public ArrayList<Ball> getVisualElements() {
+    public List<VisualObject> getVisualElements() {
         return this.controller.getVisualElements();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        ballInitPosition = new Vector<>();
-        ballInitPosition.add(e.getX());
-        ballInitPosition.add(e.getY());
+        this.ballInitPosition = new CoordinatesDTO();
+        this.ballInitPosition.setX(e.getX());
+        this.ballInitPosition.setY(e.getY());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        ballVelocity = new Vector<>();
-        ballVelocity.add(ballInitPosition.get(0) - e.getX());
-        ballVelocity.add(ballInitPosition.get(1) - e.getY());
+        ballVelocity = new VectorDTO();
+        ballVelocity.setX(ballInitPosition.getX() - e.getX());
+        ballVelocity.setY(ballInitPosition.getY() - e.getY());
         
-        if(!((ballVelocity.get(0) == 0) && (ballVelocity.get(1) == 0))){
+        if(!((ballVelocity.getX() == 0) && (ballVelocity.getY() == 0))){
         
             this.controller.addBall(ballVelocity, ballInitPosition);
         }
@@ -123,19 +122,19 @@ public class TGViewer extends JFrame implements MouseListener {
         this.ySize = ySize;
     }
 
-    public Vector<Integer> getBallVelocity() {
+    public VectorDTO getBallVelocity() {
         return ballVelocity;
     }
 
-    public void setBallVelocity(Vector<Integer> ballVelocity) {
+    public void setBallVelocity(VectorDTO ballVelocity) {
         this.ballVelocity = ballVelocity;
     }
 
-    public Vector<Integer> getBallInitPosition() {
+    public CoordinatesDTO getBallInitPosition() {
         return ballInitPosition;
     }
 
-    public void setBallInitPosition(Vector<Integer> ballInitPosition) {
+    public void setBallInitPosition(CoordinatesDTO ballInitPosition) {
         this.ballInitPosition = ballInitPosition;
     }
 }

@@ -17,7 +17,7 @@ public class GameRules {
 
                 return true;
             } else if (this.localController.getTgController().getTgComunications().getChannels().get(i).getInterlocutor()
-                    .getPeerLocation() == PeerLocation.WEAST && direcc == 2) {
+                    .getPeerLocation() == PeerLocation.WEST && direcc == 2) {
 
                 return true;
             }

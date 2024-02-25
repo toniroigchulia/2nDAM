@@ -1,6 +1,7 @@
 package Engine;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import Comunications.PeerLocation;
@@ -12,6 +13,8 @@ public class TGLocalController {
     private GameRules rules;
     private TGController tgController;
 
+
+    // CONSTRUCTOR
     public TGLocalController(TGController controller) {
         this.tgModel = new TGModel(this);
         this.tgViewer = new TGViewer(this);
@@ -19,6 +22,8 @@ public class TGLocalController {
         this.tgController = controller;
     }
 
+
+    // METODOS
     public void checkBallColison(Ball mainBall, ArrayList<Ball> ballsColiding) {
         // Colision contra otras bolas
         if (ballsColiding.size() > 0) {
@@ -29,109 +34,107 @@ public class TGLocalController {
 
         // Colision contra bordes
         if (borderBounce(mainBall)) {
-            mainBall.checkNextMove();
+            mainBall.move();
         }
-
-        mainBall.move();
     }
 
     private void ballToBallBounce(Ball mainBall, Ball otherBall) {
         // Si tienen direcciones contrarias
-        if ((mainBall.getVelocity().get(0) > 0 && otherBall.getVelocity().get(0) < 0)
-                || (mainBall.getVelocity().get(0) < 0 && otherBall.getVelocity().get(0) > 0)) {
+        if ((mainBall.getVelocity().getX() > 0 && otherBall.getVelocity().getX() < 0)
+                || (mainBall.getVelocity().getX() < 0 && otherBall.getVelocity().getX() > 0)) {
 
-            mainBall.getVelocity().set(0, mainBall.getVelocity().get(0) * (-1));
-            otherBall.getVelocity().set(0, otherBall.getVelocity().get(0) * (-1));
+            mainBall.getVelocity().setX(mainBall.getVelocity().getX() * (-1));
+            otherBall.getVelocity().setX(otherBall.getVelocity().getX() * (-1));
         }
 
-        if ((mainBall.getVelocity().get(1) > 0 && otherBall.getVelocity().get(1) < 0)
-                || (mainBall.getVelocity().get(1) < 0 && otherBall.getVelocity().get(1) > 0)) {
+        if ((mainBall.getVelocity().getX() > 0 && otherBall.getVelocity().getY() < 0)
+                || (mainBall.getVelocity().getY() < 0 && otherBall.getVelocity().getY() > 0)) {
 
-            mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
-            otherBall.getVelocity().set(1, otherBall.getVelocity().get(1) * (-1));
+            mainBall.getVelocity().setY(mainBall.getVelocity().getY() * (-1));
+            otherBall.getVelocity().setY(otherBall.getVelocity().getY() * (-1));
         }
 
         // Si las bolas tienen la misma direccion
-        if ((mainBall.getVelocity().get(0) > 0 && otherBall.getVelocity().get(0) > 0)
-                || (mainBall.getVelocity().get(0) < 0 && otherBall.getVelocity().get(0) < 0)) {
+        if ((mainBall.getVelocity().getX() > 0 && otherBall.getVelocity().getX() > 0)
+                || (mainBall.getVelocity().getX() < 0 && otherBall.getVelocity().getX() < 0)) {
 
-            mainBall.getVelocity().set(0, mainBall.getVelocity().get(0) * (-1));
+            mainBall.getVelocity().setX(mainBall.getVelocity().getX() * (-1));
         }
 
-        if ((mainBall.getVelocity().get(1) > 0 && otherBall.getVelocity().get(1) > 0)
-                || (mainBall.getVelocity().get(1) < 0 && otherBall.getVelocity().get(1) < 0)) {
+        if ((mainBall.getVelocity().getY() > 0 && otherBall.getVelocity().getY() > 0)
+                || (mainBall.getVelocity().getY() < 0 && otherBall.getVelocity().getY() < 0)) {
 
-            mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
+            mainBall.getVelocity().setY(mainBall.getVelocity().getY() * (-1));
         }
         
         // Si una de las velocidades es 0
-        if (otherBall.getVelocity().get(0) == 0) {
+        if (otherBall.getVelocity().getX() == 0) {
             
-            mainBall.getVelocity().set(0, mainBall.getVelocity().get(0) * (-1));
+            mainBall.getVelocity().setX(mainBall.getVelocity().getX() * (-1));
         }
         
-        if (otherBall.getVelocity().get(1) == 0) {
+        if (otherBall.getVelocity().getY() == 0) {
             
-            mainBall.getVelocity().set(1, mainBall.getVelocity().get(1) * (-1));
+            mainBall.getVelocity().setY(mainBall.getVelocity().getY() * (-1));
         }
     }
 
     private boolean borderBounce(Ball mainBall) {
         // Colision contra bordes
         Vector<Integer> canvaSize = this.getCanvasSize();
-        Vector<Integer> bouncePosition = new Vector<>();
+        CoordinatesDTO bouncePosition = new CoordinatesDTO();
 
         // Bordes Laterales
-        if (mainBall.getNextPosition().get(0) <= 0) {
+        if (mainBall.getNextPosition().getX() <= 0) {
 
             if (!this.rules.checkGate(2)) {
 
-                bouncePosition.add(0);
-                bouncePosition.add(mainBall.getNextPosition().get(1));
+                bouncePosition.setX(0);
+                bouncePosition.setY(mainBall.getNextPosition().getY());
 
                 mainBall.bounce(bouncePosition, 0);
+                return true;
             } else {
 
-                sendObject(mainBall, PeerLocation.WEAST);
+                sendObject(mainBall, PeerLocation.WEST);
+                return false;
             }
-
-            return true;
-        } else if (mainBall.getNextPosition().get(0) >= canvaSize.get(0)) {
+        } else if (mainBall.getNextPosition().getX() >= canvaSize.get(0)) {
 
             if (!this.rules.checkGate(1)) {
 
-                bouncePosition.add(canvaSize.get(0));
-                bouncePosition.add(mainBall.getNextPosition().get(1));
+                bouncePosition.setX(canvaSize.get(0));
+                bouncePosition.setY(mainBall.getNextPosition().getY());
 
                 mainBall.bounce(bouncePosition, 0);
+                return true;
             } else {
 
                 sendObject(mainBall, PeerLocation.EAST);
+                return false;
             }
-
-            return true;
         }
 
         // Techo y Suelo
-        if (mainBall.getNextPosition().get(1) <= 0) {
+        if (mainBall.getNextPosition().getY() <= 0) {
 
-            bouncePosition.add(mainBall.getNextPosition().get(0));
-            bouncePosition.add(0);
+            bouncePosition.setX(mainBall.getNextPosition().getX());
+            bouncePosition.setY(0);
 
             mainBall.bounce(bouncePosition, 1);
 
             return true;
-        } else if (mainBall.getNextPosition().get(1) >= canvaSize.get(1)) {
+        } else if (mainBall.getNextPosition().getY() >= canvaSize.get(1)) {
 
-            bouncePosition.add(mainBall.getNextPosition().get(0));
-            bouncePosition.add(canvaSize.get(1));
+            bouncePosition.setX(mainBall.getNextPosition().getX());
+            bouncePosition.setY(canvaSize.get(1));
 
             mainBall.bounce(bouncePosition, 1);
 
             return true;
         }
 
-        return false;
+        return true;
     }
 
     public Vector<Integer> getCanvasSize() {
@@ -141,23 +144,21 @@ public class TGLocalController {
         return canvaSize;
     }
 
-    public void addBall(Vector<Integer> ballVelocity, Vector<Integer> ballInitPosition) {
+    public void addBall(VectorDTO ballVelocity, CoordinatesDTO ballInitPosition) {
         this.tgModel.addBall(ballVelocity, ballInitPosition);
     }
 
     public void addBall(Ball ball) {
-        Vector<Integer> newPosition = new Vector<Integer>();
-        newPosition.add(0);
-        newPosition.add(ball.getPosition().get(1));
+        CoordinatesDTO newPosition = new CoordinatesDTO(0, ball.getPosition().getY());
         
-        if (ball.getPosition().get(0) >= getCanvasSize().get(0)/2) {
+        if (ball.getPosition().getX() >= getCanvasSize().get(0)/2) {
             
-            newPosition.set(0, 5 + ball.getRad());
+            newPosition.setX(0);
             ball.setPosition(newPosition);
-        } else if (ball.getPosition().get(0) < getCanvasSize().get(0)/2) {
+        } else if (ball.getPosition().getX() < getCanvasSize().get(0)/2) {
             
-            newPosition.set(0, getCanvasSize().get(0) - 5 - ball.getRad());
-            ball.getPosition().set(0, 0);
+            newPosition.setX(getCanvasSize().get(0));
+            ball.setPosition(newPosition);
         }
 
         this.tgModel.addBall(ball);
@@ -167,13 +168,12 @@ public class TGLocalController {
         this.tgModel.removeBall(ball);
         
         if(!ball.isAlive()){
-            System.out.println("BolaMandada local");
             this.tgController.sendObject(ball, direc);
         }
     }
 
-    // Getters And Setters
-    public ArrayList<Ball> getVisualElements() {
+    // GETTERS AND SETTERS
+    public List<VisualObject> getVisualElements() {
         return this.tgModel.getVisualElements();
     }
 

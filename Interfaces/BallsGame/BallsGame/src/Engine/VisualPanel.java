@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
+import java.util.List;
 
 public class VisualPanel extends Canvas implements Runnable, ActionListener {
 
@@ -20,7 +20,7 @@ public class VisualPanel extends Canvas implements Runnable, ActionListener {
         this.setSize(new Dimension(920, 720));
     }
 
-    private void paintElement(ArrayList<Ball> elements) {
+    private void paintElement(List<VisualObject> elements) {
         if (this.bufferStrategy == null) {
             this.createBufferStrategy(2);
             this.bufferStrategy = this.getBufferStrategy();
