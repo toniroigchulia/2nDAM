@@ -33,6 +33,7 @@ public class TGComunications {
     }
 
     public void addChannel(Socket SOCKET, int index) {
+    
         this.getDownChannels().get(index).setSocket(SOCKET);
         new Thread(this.getDownChannels().get(index)).start();
         this.getChannels().add(this.getDownChannels().get(index));
@@ -40,6 +41,7 @@ public class TGComunications {
     }
 
     public synchronized void moveToDownChannel(Channel channel) {
+    
         for (int i = 0; i < this.getChannels().size(); i++){
             if (this.getChannels().get(i) == channel){
                 this.getDownChannels().add(channel);
@@ -49,6 +51,7 @@ public class TGComunications {
     }
 
     public void sendObject(Ball ball, Enum<PeerLocation> direc) {
+    
         for(int i = 0; i < this.channels.size(); i++){
             if(this.channels.get(i).getInterlocutor().getPeerLocation() == direc){
                 this.channels.get(i).sendData(ball);
