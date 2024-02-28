@@ -62,7 +62,7 @@ public class Channel implements Runnable {
     }
 
     public synchronized void setDownChannel() {
-        // Si detectamos que la conexion no funciona como queremos eliminamos el socket
+        // Si detectamos que la conexion no funciona queremos eliminamos el socket
         try {
 
             stopTestChannel();

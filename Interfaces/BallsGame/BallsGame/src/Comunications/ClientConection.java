@@ -30,7 +30,11 @@ public class ClientConection implements Runnable {
                 try {
 
                     System.out.println("Conectando como cliente al canal: " + i);
+<<<<<<< HEAD
                     this.SOCKET = new Socket(this.tgComunications.getDownChannels().get(i).getInterlocutor().getIP(), 9000);
+=======
+                    this.SOCKET = new Socket(this.tgComunications.getDownChannels().get(i).getInterlocutor().getIP(), 8000);
+>>>>>>> e1efd2ff6cc7cc38691aca484ac7ccbaffbca4a2
                     this.tgComunications.addChannel(SOCKET, i);
                     System.out.println("Conexion como cliente establecida");
                 } catch (Exception e) {
