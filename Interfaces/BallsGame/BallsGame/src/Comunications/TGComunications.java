@@ -32,7 +32,7 @@ public class TGComunications {
         }
     }
 
-    public void addChannel(Socket SOCKET, int index) {
+    public synchronized void addChannel(Socket SOCKET, int index) {
         this.getDownChannels().get(index).setSocket(SOCKET);
         new Thread(this.getDownChannels().get(index)).start();
         this.getChannels().add(this.getDownChannels().get(index));

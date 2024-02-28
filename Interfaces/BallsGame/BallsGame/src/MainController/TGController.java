@@ -26,7 +26,6 @@ public class TGController {
         try {
             switch (appFrame.getAppFrameType()) {
                 case BALL:
-                    System.out.println("Añadimos bola");
                     this.tgLocalController.addBall((Ball) appFrame.getObject());
                     break;
                 case ASTEROID:
